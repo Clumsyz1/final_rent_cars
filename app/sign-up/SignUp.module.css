@@ -1,0 +1,28 @@
+/* app/auth/signup/SignUp.module.css */
+.container {
+    max-width: 400px;
+    margin: auto;
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 20px;
+  }
+  
+  .input {
+    padding: 10px;
+    font-size: 16px;
+  }
+  
+  .button {
+    padding: 12px;
+    background-color: #28a745;
+    color: white;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+  }
