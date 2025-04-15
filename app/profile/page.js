@@ -22,7 +22,7 @@ export default function ProfilePage() {
   const [form, setForm] = useState({
     firstName: "",
     lastName: "",
-    dob: "",
+    date: "",
     gender: "Male",
     phone: "",
   });
@@ -40,7 +40,7 @@ export default function ProfilePage() {
           setForm({
             firstName: data.firstName || "",
             lastName: data.lastName || "",
-            dob: data.dob || "",
+            date: data.date || "",
             gender: data.gender || "Male",
             phone: data.phone || "",
           });
@@ -66,7 +66,7 @@ export default function ProfilePage() {
     await setDoc(userRef, {
       firstName: form.firstName,
       lastName: form.lastName,
-      dob: form.dob,
+      date: form.date,
       gender: form.gender,
       phone: form.phone,
       email: user.email,
@@ -146,8 +146,8 @@ export default function ProfilePage() {
                 <TextField
                   label="วันเกิด"
                   type="date"
-                  name="dob"
-                  value={form.dob}
+                  name="date"
+                  value={form.date}
                   onChange={handleChange}
                   fullWidth
                   InputLabelProps={{ shrink: true }}
