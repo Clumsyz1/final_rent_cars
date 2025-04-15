@@ -16,6 +16,7 @@ import { auth } from "@/app/firebase/config";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import LogoutIcon from "@mui/icons-material/Logout";
 import DriveEtaIcon from "@mui/icons-material/DriveEta";
+import PersonIcon from "@mui/icons-material/Person";
 
 export default function UserMenu() {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -48,15 +49,15 @@ export default function UserMenu() {
   if (!user) {
     return (
       <IconButton onClick={() => router.push("/sign-in")} color="inherit">
-        <AccountCircleIcon />
+        <PersonIcon />
       </IconButton>
     );
   }
 
   return (
-    <>
+    <div>
       <IconButton onClick={handleClick} color="inherit">
-        <Avatar sx={{ width: 32, height: 32 }} />
+        <Avatar sx={{ width: 32, height: 32, bgcolor: "transparent" }} />
       </IconButton>
       <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
         <Typography sx={{ px: 2, py: 1, fontWeight: "bold" }}>
@@ -93,6 +94,6 @@ export default function UserMenu() {
           <Typography color="error">Logout</Typography>
         </MenuItem>
       </Menu>
-    </>
+    </div>
   );
 }
