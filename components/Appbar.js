@@ -27,7 +27,7 @@ export default function MyAppBar() {
     <AppBar position="static">
       <Toolbar>
         <Typography variant="h6" sx={{ flexGrow: 1 }}>
-          Pen Kuy Rai Mak Pao Wa
+          Rent Car Rent Jai
         </Typography>
 
         {user ? (
