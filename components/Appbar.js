@@ -1,10 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { AppBar, Toolbar, Typography, Button, Box } from "@mui/material";
+import { AppBar, Toolbar, Typography, Box } from "@mui/material";
 import { useRouter } from "next/navigation";
-import { onAuthStateChanged, signOut } from "firebase/auth";
+import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "@/app/firebase/config";
+import UserMenu from "./UserMenu";
 
 export default function MyAppBar() {
   const [user, setUser] = useState(null);
@@ -17,33 +18,20 @@ export default function MyAppBar() {
     return () => unsubscribe();
   }, []);
 
-  const handleLogout = async () => {
-    await signOut(auth);
-    setUser(null);
-    router.push("/");
-  };
-
   return (
-    <AppBar position="static">
+    <AppBar position="static" sx={{ backgroundColor: "#1976d2" }}>
       <Toolbar>
-        <Typography variant="h6" sx={{ flexGrow: 1 }}>
-          Rent Car Rent Jai
+        <Typography
+          variant="h6"
+          sx={{ flexGrow: 1, fontWeight: "bold", cursor: "pointer" }}
+          onClick={() => router.push("/")}
+        >
+          🚗 Rent Car Rent Jai
         </Typography>
 
-        {user ? (
-          <>
-            <Typography variant="body1" sx={{ marginRight: 2 }}>
-              {user.email}
-            </Typography>
-            <Button color="inherit" onClick={handleLogout}>
-              ออกจากระบบ
-            </Button>
-          </>
-        ) : (
-          <Button color="inherit" onClick={() => router.push("/sign-in")}>
-            เข้าสู่ระบบ
-          </Button>
-        )}
+        <Box>
+          <UserMenu />
+        </Box>
       </Toolbar>
     </AppBar>
   );
