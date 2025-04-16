@@ -12,21 +12,37 @@ import {
 } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { onAuthStateChanged, signOut } from "firebase/auth";
-import { auth } from "@/app/firebase/config";
+import { auth, db } from "@/app/firebase/config";
+import { doc, getDoc } from "firebase/firestore";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import LogoutIcon from "@mui/icons-material/Logout";
 import DriveEtaIcon from "@mui/icons-material/DriveEta";
 import PersonIcon from "@mui/icons-material/Person";
+import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 
 export default function UserMenu() {
   const [anchorEl, setAnchorEl] = useState(null);
   const [user, setUser] = useState(null);
+  const [role, setRole] = useState(null);
   const open = Boolean(anchorEl);
   const router = useRouter();
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
+    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+      if (currentUser) {
+        setUser(currentUser);
+
+        // โหลดข้อมูลผู้ใช้จาก Firestore
+        const docRef = doc(db, "users", currentUser.uid);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          const data = docSnap.data();
+          setRole(data.role || "user");
+        }
+      } else {
+        setUser(null);
+        setRole(null);
+      }
     });
     return () => unsubscribe();
   }, []);
@@ -86,6 +102,22 @@ export default function UserMenu() {
           </ListItemIcon>
           Bookings
         </MenuItem>
+
+        {/* ✅ Admin Panel */}
+        {role === "admin" && (
+          <MenuItem
+            onClick={() => {
+              router.push("/admin");
+              handleClose();
+            }}
+          >
+            <ListItemIcon>
+              <AdminPanelSettingsIcon fontSize="small" />
+            </ListItemIcon>
+            Admin Panel
+          </MenuItem>
+        )}
+
         <Divider />
         <MenuItem onClick={handleLogout}>
           <ListItemIcon>
