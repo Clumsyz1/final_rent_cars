@@ -1,6 +1,6 @@
 "use client";
 
-import { useSearchParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { auth, db } from "@/app/firebase/config";
 import { doc, getDoc, addDoc, collection } from "firebase/firestore";
@@ -16,20 +16,28 @@ import {
 } from "@mui/material";
 
 export default function ConfirmPage() {
-  const params = useSearchParams();
   const router = useRouter();
   const [car, setCar] = useState(null);
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
 
-  const carId = params.get("carId");
-  const startDate = params.get("start");
-  const endDate = params.get("end");
+  const [carId, setCarId] = useState(null);
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
 
   const [days, setDays] = useState(0);
   const [total, setTotal] = useState(0);
 
   useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    setCarId(params.get("carId"));
+    setStartDate(params.get("start"));
+    setEndDate(params.get("end"));
+  }, []);
+
+  useEffect(() => {
+    if (!carId || !startDate || !endDate) return;
+
     onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
     });
