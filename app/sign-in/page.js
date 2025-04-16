@@ -52,7 +52,7 @@ export default function SignIn() {
         <button type="submit" className={styles.button}>
           เข้าสู่ระบบ
         </button>
-      </form>ƒ
+      </form>
       <p>
       ForgotPassword? <a href="/forgot-password">ForgotPassword</a>
       </p>
