@@ -31,7 +31,9 @@ export default function ProfilePage() {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
-      if (currentUser) {
+      if (!currentUser) {
+        router.push("/sign-in");
+      } else {
         setUser(currentUser);
         const docRef = doc(db, "users", currentUser.uid);
         const docSnap = await getDoc(docRef);
@@ -87,7 +89,11 @@ export default function ProfilePage() {
           <Button fullWidth variant="contained" sx={{ mb: 1 }}>
             👤 โปรไฟล์
           </Button>
-          <Button fullWidth variant="outlined">
+          <Button
+            fullWidth
+            variant="outlined"
+            onClick={() => router.push("/bookings")}
+          >
             🚗 การจอง
           </Button>
           <Button
@@ -95,7 +101,7 @@ export default function ProfilePage() {
             variant="text"
             color="secondary"
             sx={{ mt: 3 }}
-            onClick={() => router.back()}
+            onClick={() => router.push("/")}
           >
             ⬅ ย้อนกลับ
           </Button>

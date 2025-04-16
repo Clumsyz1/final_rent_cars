@@ -12,17 +12,17 @@ export default function DateRangePicker() {
   const router = useRouter();
 
   const handleNext = () => {
+    if (!startDate || !endDate) {
+      alert("กรุณาเลือกวันเริ่มต้นและวันสิ้นสุดการเช่ารถ");
+      return;
+    }
+
     onAuthStateChanged(auth, (user) => {
       if (!user) {
         alert("กรุณาเข้าสู่ระบบก่อนทำการเช่ารถ");
         router.push("/sign-in");
       } else {
-        if (!startDate || !endDate) {
-          alert("กรุณาเลือกวันเริ่มต้นและวันสิ้นสุดการเช่ารถ");
-          return;
-        }
-        // ส่งวันที่ไปหน้าถัดไป (optional: ผ่าน query param หรือ context)
-        router.push("/rent/select-car");
+        router.push(`/rent?start=${startDate}&end=${endDate}`);
       }
     });
   };
