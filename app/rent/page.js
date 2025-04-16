@@ -12,26 +12,35 @@ import {
 import { useEffect, useState } from "react";
 import { db } from "@/app/firebase/config";
 import { collection, getDocs, query, where } from "firebase/firestore";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 export default function RentPage() {
   const [cars, setCars] = useState([]);
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
-  const searchParams = useSearchParams();
   const router = useRouter();
 
-  const startDate = searchParams.get("start");
-  const endDate = searchParams.get("end");
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    setStartDate(params.get("start"));
+    setEndDate(params.get("end"));
+  }, []);
 
   useEffect(() => {
     if (!startDate || !endDate || startDate === "null" || endDate === "null") {
-      alert("กรุณาเลือกวันที่เช่าให้ครบถ้วน");
-      router.push("/");
       return;
     }
 
     const fetchData = async () => {
+      if (!startDate || !endDate || startDate === "null" || endDate === "null") {
+        alert("กรุณาเลือกวันที่เช่าให้ครบถ้วน");
+        router.push("/");
+        return;
+      }
+
       // ดึงข้อมูลรถทั้งหมด
       const carSnapshot = await getDocs(collection(db, "cars"));
       const carList = carSnapshot.docs.map((doc) => ({
