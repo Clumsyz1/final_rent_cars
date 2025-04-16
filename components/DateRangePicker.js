@@ -1,49 +1,64 @@
-// components/DateRangePicker.js
 "use client";
 
 import { useState } from "react";
-import { TextField, Box, Button } from "@mui/material";
 import { useRouter } from "next/navigation";
+import { auth } from "@/app/firebase/config";
+import { onAuthStateChanged } from "firebase/auth";
+import { TextField, Button, Grid, Typography } from "@mui/material";
 
 export default function DateRangePicker() {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const router = useRouter();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    if (!startDate || !endDate) {
-      alert("กรุณาเลือกวันเริ่มต้นและวันสิ้นสุด");
-      return;
-    }
-
-    router.push(`/rent/select-car?start=${startDate}&end=${endDate}`);
+  const handleNext = () => {
+    onAuthStateChanged(auth, (user) => {
+      if (!user) {
+        alert("กรุณาเข้าสู่ระบบก่อนทำการเช่ารถ");
+        router.push("/sign-in");
+      } else {
+        if (!startDate || !endDate) {
+          alert("กรุณาเลือกวันเริ่มต้นและวันสิ้นสุดการเช่ารถ");
+          return;
+        }
+        // ส่งวันที่ไปหน้าถัดไป (optional: ผ่าน query param หรือ context)
+        router.push("/rent/select-car");
+      }
+    });
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <Box display="flex" flexDirection="column" gap={5}>
+    <Grid container spacing={2} justifyContent="center">
+      <Grid item xs={12}>
+        <Typography variant="h6" align="center" gutterBottom>
+          เลือกวันที่เช่ารถ
+        </Typography>
+      </Grid>
+      <Grid item xs={6}>
         <TextField
+          label="วันที่เริ่มเช่า"
           type="date"
-          label="วันเริ่มต้น"
-          InputLabelProps={{ shrink: true }}
           value={startDate}
           onChange={(e) => setStartDate(e.target.value)}
-          required
-        />
-        <TextField
-          type="date"
-          label="วันสิ้นสุด"
+          fullWidth
           InputLabelProps={{ shrink: true }}
+        />
+      </Grid>
+      <Grid item xs={6}>
+        <TextField
+          label="วันที่สิ้นสุด"
+          type="date"
           value={endDate}
           onChange={(e) => setEndDate(e.target.value)}
-          required
+          fullWidth
+          InputLabelProps={{ shrink: true }}
         />
-        <Button type="submit" variant="contained" color="primary">
-          ถัดไป ➡
+      </Grid>
+      <Grid item xs={12}>
+        <Button variant="contained" fullWidth onClick={handleNext}>
+          ถัดไป
         </Button>
-      </Box>
-    </form>
+      </Grid>
+    </Grid>
   );
 }
