@@ -28,12 +28,12 @@ export default function RentPage() {
   const [cars, setCars] = useState([]);
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
-  const router = useRouter();
-
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
+  const [isClient, setIsClient] = useState(false);
+  const router = useRouter();
 
-  // ฟิลเตอร์
+  // Filters
   const [transmission, setTransmission] = useState("any");
   const [fuelType, setFuelType] = useState("any");
   const [bodyType, setBodyType] = useState("any");
@@ -41,49 +41,47 @@ export default function RentPage() {
   const [yearRange, setYearRange] = useState([2000, 2025]);
 
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    setStartDate(params.get("start"));
-    setEndDate(params.get("end"));
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      setStartDate(params.get("start"));
+      setEndDate(params.get("end"));
+      setIsClient(true);
+    }
   }, []);
 
   useEffect(() => {
-    if (!startDate || !endDate || startDate === "null" || endDate === "null") {
-      return;
-    }
+    if (!startDate || !endDate) return;
 
     const fetchData = async () => {
-      const carSnapshot = await getDocs(collection(db, "cars"));
-      const carList = carSnapshot.docs.map((doc) => ({
+      const carSnap = await getDocs(collection(db, "cars"));
+      const carsData = carSnap.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
       }));
 
-      const bookingSnapshot = await getDocs(
+      const bookingSnap = await getDocs(
         query(
           collection(db, "bookings"),
           where("startDate", "<=", endDate),
           where("endDate", ">=", startDate)
         )
       );
-      const bookingList = bookingSnapshot.docs.map((doc) => doc.data());
+      const bookingsData = bookingSnap.docs.map((doc) => doc.data());
 
-      setCars(carList);
-      setBookings(bookingList);
+      setCars(carsData);
+      setBookings(bookingsData);
       setLoading(false);
     };
 
     fetchData();
   }, [startDate, endDate]);
 
-  const getAvailableStock = (carId, stock) => {
-    const booked = bookings.filter((b) => b.carId === carId).length;
-    return stock - booked;
-  };
+  const getAvailableStock = (carId, stock) =>
+    stock - bookings.filter((b) => b.carId === carId).length;
 
   const filteredCars = cars.filter((car) => {
     const [minPrice, maxPrice] = priceRange;
     const [minYear, maxYear] = yearRange;
-
     return (
       car.pricePerDay >= minPrice &&
       car.pricePerDay <= maxPrice &&
@@ -95,20 +93,20 @@ export default function RentPage() {
     );
   });
 
+  if (!isClient) return null; // 👈 กัน hydration error
+
   return (
     <Grid container>
+      {/* Sidebar Filters */}
       <Grid item xs={12} md={3} p={3}>
         <Paper sx={{ p: 2 }}>
-          <Typography variant="h6" gutterBottom>
-            Filters
-          </Typography>
+          <Typography variant="h6">Filters</Typography>
 
-          <FormControl fullWidth sx={{ mb: 2 }}>
+          <FormControl fullWidth sx={{ my: 2 }}>
             <InputLabel>Body Type</InputLabel>
             <Select
               value={bodyType}
               onChange={(e) => setBodyType(e.target.value)}
-              label="Body Type"
             >
               <MenuItem value="any">Any</MenuItem>
               <MenuItem value="SUV">SUV</MenuItem>
@@ -118,34 +116,34 @@ export default function RentPage() {
             </Select>
           </FormControl>
 
-          <Typography gutterBottom>Price Range (฿)</Typography>
+          <Typography>Price Range (฿)</Typography>
           <Slider
             value={priceRange}
-            onChange={(e, newVal) => setPriceRange(newVal)}
+            onChange={(e, val) => setPriceRange(val)}
             min={0}
             max={5000}
             valueLabelDisplay="auto"
-            sx={{ mb: 2 }}
+            sx={{ my: 2 }}
           />
 
-          <Typography gutterBottom>Year</Typography>
+          <Typography>Year</Typography>
           <Slider
             value={yearRange}
-            onChange={(e, newVal) => setYearRange(newVal)}
+            onChange={(e, val) => setYearRange(val)}
             min={2000}
             max={2025}
             valueLabelDisplay="auto"
-            sx={{ mb: 2 }}
+            sx={{ my: 2 }}
           />
 
-          <Typography gutterBottom>Transmission</Typography>
+          <Typography>Transmission</Typography>
           <ToggleButtonGroup
             value={transmission}
             exclusive
             onChange={(e, val) => setTransmission(val)}
             fullWidth
-            sx={{ mb: 2 }}
-          >n
+            sx={{ my: 2 }}
+          >
             <ToggleButton value="any">Any</ToggleButton>
             <ToggleButton value="manual">Manual</ToggleButton>
             <ToggleButton value="automatic">Automatic</ToggleButton>
@@ -156,7 +154,6 @@ export default function RentPage() {
             <Select
               value={fuelType}
               onChange={(e) => setFuelType(e.target.value)}
-              label="Fuel Type"
             >
               <MenuItem value="any">Any</MenuItem>
               <MenuItem value="Gasoline">Gasoline</MenuItem>
@@ -167,6 +164,7 @@ export default function RentPage() {
         </Paper>
       </Grid>
 
+      {/* Car List */}
       <Grid item xs={12} md={9} p={3}>
         <Typography variant="h4" gutterBottom>
           🚗 เลือกรถที่คุณต้องการเช่า
@@ -184,8 +182,7 @@ export default function RentPage() {
           <Grid container spacing={3}>
             {filteredCars.map((car) => {
               const available = getAvailableStock(car.id, car.stock);
-              const isOutOfStock = available <= 0;
-
+              const outOfStock = available <= 0;
               return (
                 <Grid item xs={12} sm={6} md={4} key={car.id}>
                   <Card>
@@ -200,29 +197,24 @@ export default function RentPage() {
                       <Typography variant="body2" gutterBottom>
                         {car.type}
                       </Typography>
-                      <Box
-                        display="flex"
-                        gap={1}
-                        alignItems="center"
-                        fontSize={14}
-                      >
+                      <Box display="flex" gap={1} fontSize={14}>
                         👥 {car.seats} | ⚙ {car.transmission} | ⛽{" "}
                         {car.fuelType}
                       </Box>
                       <Typography mt={1}>฿{car.pricePerDay}/day</Typography>
                       <Typography
-                        color={isOutOfStock ? "error" : "primary"}
+                        color={outOfStock ? "error" : "primary"}
                         fontWeight="bold"
                         mt={1}
                       >
-                        {isOutOfStock
+                        {outOfStock
                           ? "❌ Out of Stock"
                           : `✅ เหลือ ${available} คัน`}
                       </Typography>
                       <Button
                         variant="contained"
                         fullWidth
-                        disabled={isOutOfStock}
+                        disabled={outOfStock}
                         sx={{ mt: 1 }}
                         onClick={() =>
                           router.push(
