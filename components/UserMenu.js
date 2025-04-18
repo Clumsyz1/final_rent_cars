@@ -64,7 +64,7 @@ export default function UserMenu() {
 
   if (!user) {
     return (
-      <IconButton onClick={() => router.push("/sign-in")} color="inherit">
+      <IconButton onClick={() => router.push("/auth/sign-in")} color="inherit">
         <PersonIcon />
       </IconButton>
     );

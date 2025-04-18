@@ -24,13 +24,21 @@ export default function AdminBookings() {
       const bookingList = await Promise.all(
         snapshot.docs.map(async (docSnap) => {
           const booking = docSnap.data();
+
           const carSnap = await getDoc(doc(db, "cars", booking.carId));
+          const carData = carSnap.exists() ? carSnap.data() : null;
+
+          const userSnap = await getDoc(doc(db, "users", booking.userId));
+          const userData = userSnap.exists() ? userSnap.data() : null;
+
           return {
             ...booking,
-            car: carSnap.exists() ? carSnap.data() : null,
+            car: carData,
+            user: userData,
           };
         })
       );
+
       setBookings(bookingList);
       setLoading(false);
     };
@@ -61,7 +69,12 @@ export default function AdminBookings() {
                   <>
                     📅 {booking.startDate} - {booking.endDate}
                     <br />
-                    👤 ผู้ใช้: {booking.userId}
+                    👤 ผู้เช่า:{" "}
+                    {booking.user
+                      ? `${booking.user.firstName} ${booking.user.lastName}`
+                      : booking.userId}
+                    <br />
+                    📞 เบอร์โทร: {booking.user?.phone || "-"}
                   </>
                 }
               />

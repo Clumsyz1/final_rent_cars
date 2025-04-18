@@ -20,7 +20,7 @@ export default function DateRangePicker() {
     onAuthStateChanged(auth, (user) => {
       if (!user) {
         alert("กรุณาเข้าสู่ระบบก่อนทำการเช่ารถ");
-        router.push("/sign-in");
+        router.push("/auth/sign-in");
       } else {
         router.push(`/rent?start=${startDate}&end=${endDate}`);
       }

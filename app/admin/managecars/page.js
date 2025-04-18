@@ -140,7 +140,12 @@ export default function ManageCars() {
         {cars.map((car) => (
           <Grid item xs={12} sm={6} md={4} key={car.id}>
             <Card>
-              <CardMedia component="img" height="300" width={450} image={car.imageUrl} />
+              <CardMedia
+                component="img"
+                height="300"
+                width={450}
+                image={car.imageUrl}
+              />
               <CardContent>
                 <Typography variant="h6">{car.name}</Typography>
                 <Typography>ประเภท: {car.type}</Typography>
