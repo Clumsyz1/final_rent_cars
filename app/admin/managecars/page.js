@@ -9,6 +9,7 @@ import {
   Button,
   Grid,
   Card,
+  Box,
   CardContent,
   CardMedia,
   IconButton,
@@ -253,9 +254,17 @@ export default function ManageCars() {
       <Grid container spacing={2}>
         {cars.map((car) => (
           <Grid item xs={12} sm={6} md={4} key={car.id}>
-            <Card>
-              <CardMedia component="img" height="200" image={car.imageUrl} />
-              <CardContent>
+            <Card
+              sx={{ height: "100%", display: "flex", flexDirection: "column" }}
+            >
+              <CardMedia
+                component="img"
+                height="140"
+                image={car.imageUrl}
+                alt={car.name}
+                sx={{ objectFit: "cover" }}
+              />
+              <CardContent sx={{ flexGrow: 1 }}>
                 <Typography variant="h6">{car.name}</Typography>
                 <Typography>ประเภท: {car.type}</Typography>
                 <Typography>ราคา/วัน: ฿{car.pricePerDay}</Typography>
@@ -264,22 +273,24 @@ export default function ManageCars() {
                 <Typography>เกียร์: {car.transmission}</Typography>
                 <Typography>เชื้อเพลิง: {car.fuelType}</Typography>
                 <Typography>คงเหลือ: {car.stock}</Typography>
-                <Tooltip title="แก้ไข">
-                  <IconButton
-                    color="primary"
-                    onClick={() => handleEditCar(car)}
-                  >
-                    <EditIcon />
-                  </IconButton>
-                </Tooltip>
-                <Tooltip title="ลบ">
-                  <IconButton
-                    color="error"
-                    onClick={() => handleDeleteCar(car.id)}
-                  >
-                    <DeleteIcon />
-                  </IconButton>
-                </Tooltip>
+                <Box display="flex" justifyContent="flex-end" gap={1} mt={1}>
+                  <Tooltip title="แก้ไข">
+                    <IconButton
+                      color="primary"
+                      onClick={() => handleEditCar(car)}
+                    >
+                      <EditIcon />
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip title="ลบ">
+                    <IconButton
+                      color="error"
+                      onClick={() => handleDeleteCar(car.id)}
+                    >
+                      <DeleteIcon />
+                    </IconButton>
+                  </Tooltip>
+                </Box>
               </CardContent>
             </Card>
           </Grid>
