@@ -66,7 +66,12 @@ export default function AdminDashboard() {
           return (
             <Grid item xs={12} sm={6} md={4} key={car.id}>
               <Card>
-                <CardMedia component="img" height="300"  image={car.imageUrl} />
+                <CardMedia
+                  component="img"
+                  width="450"
+                  height="300"
+                  image={car.imageUrl}
+                />
                 <CardContent>
                   <Typography variant="h6">{car.name}</Typography>
                   <Typography>ประเภท: {car.type}</Typography>
