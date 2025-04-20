@@ -1,22 +1,26 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import {
   Typography,
   Paper,
   Divider,
-  List,
-  ListItem,
-  ListItemText,
   Grid,
+  Button,
   CircularProgress,
+  Card,
+  CardContent,
+  CardMedia,
 } from "@mui/material";
 import { db } from "@/app/firebase/config";
 import { collection, getDocs, doc, getDoc } from "firebase/firestore";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 export default function AdminBookings() {
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
+  const router = useRouter();
 
   useEffect(() => {
     const fetchBookings = async () => {
@@ -48,6 +52,14 @@ export default function AdminBookings() {
 
   return (
     <Paper sx={{ p: 4, m: 3 }}>
+      <Button
+        startIcon={<ArrowBackIcon />}
+        variant="outlined"
+        onClick={() => router.push("/admin")}
+        sx={{ mb: 2 }}
+      >
+        ย้อนกลับ
+      </Button>
       <Typography variant="h4" gutterBottom>
         📜 ประวัติการจองทั้งหมด
       </Typography>
@@ -60,13 +72,27 @@ export default function AdminBookings() {
       ) : bookings.length === 0 ? (
         <Typography>ไม่มีข้อมูลการจอง</Typography>
       ) : (
-        <List>
+        <Grid container spacing={2}>
           {bookings.map((booking, index) => (
-            <ListItem key={index} divider>
-              <ListItemText
-                primary={`🚗 ${booking.car?.name || "ไม่พบข้อมูลรถ"}`}
-                secondary={
-                  <>
+            <Grid item xs={12} sm={6} md={4} key={index}>
+              <Card sx={{ height: "100%" }}>
+                {booking.car?.imageUrl && (
+                  <CardMedia
+                    component="img"
+                    image={booking.car.imageUrl}
+                    alt={booking.car.name}
+                    sx={{
+                      width: "350px", // ทำให้รูปไม่เกิน card
+                      height: "300px", // ความสูงคงที่
+                      objectFit: "fill", // ครอบตัดรูปให้พอดี
+                    }} // ครอบตัดรูปให้พอดี}}
+                  />
+                )}
+                <CardContent>
+                  <Typography variant="h6">
+                    🚗 {booking.car?.name || "ไม่พบข้อมูลรถ"}
+                  </Typography>
+                  <Typography variant="body2">
                     📅 {booking.startDate} - {booking.endDate}
                     <br />
                     👤 ผู้เช่า:{" "}
@@ -75,12 +101,12 @@ export default function AdminBookings() {
                       : booking.userId}
                     <br />
                     📞 เบอร์โทร: {booking.user?.phone || "-"}
-                  </>
-                }
-              />
-            </ListItem>
+                  </Typography>
+                </CardContent>
+              </Card>
+            </Grid>
           ))}
-        </List>
+        </Grid>
       )}
     </Paper>
   );

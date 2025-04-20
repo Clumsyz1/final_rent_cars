@@ -188,9 +188,13 @@ export default function RentPage() {
                   <Card>
                     <CardMedia
                       component="img"
-                      height="160"
                       image={car.imageUrl}
                       alt={car.name}
+                      sx={{
+                        width: "250px", // ทำให้รูปไม่เกิน card
+                        height: "160px", // ความสูงคงที่
+                        objectFit: "fill", // ครอบตัดรูปให้พอดี
+                      }}
                     />
                     <CardContent>
                       <Typography variant="h6">{car.name}</Typography>

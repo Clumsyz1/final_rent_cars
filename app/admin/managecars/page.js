@@ -1,12 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import {
   Typography,
   Paper,
   Divider,
   TextField,
   Button,
+  MenuItem,
   Grid,
   Card,
   Box,
@@ -14,6 +16,7 @@ import {
   CardMedia,
   IconButton,
   Tooltip,
+  Stack,
 } from "@mui/material";
 import { db } from "@/app/firebase/config";
 import {
@@ -26,18 +29,21 @@ import {
 } from "firebase/firestore";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 export default function ManageCars() {
   const [cars, setCars] = useState([]);
-  const [editId, setEditId] = useState(null); // <--- ใช้สำหรับบันทึก id ของรถที่จะแก้ไข
+  const [editId, setEditId] = useState(null);
+  const router = useRouter();
+
   const [form, setForm] = useState({
     name: "",
-    type: "",
+    type: "SUV",
     pricePerDay: "",
     stock: "",
     imageUrl: "",
-    fuelType: "",
-    transmission: "",
+    fuelType: "Gasoline",
+    transmission: "manual",
     seats: "",
     year: "",
   });
@@ -65,22 +71,19 @@ export default function ManageCars() {
     };
 
     if (editId) {
-      // แก้ไข
       await updateDoc(doc(db, "cars", editId), carData);
     } else {
-      // เพิ่มใหม่
       await addDoc(collection(db, "cars"), carData);
     }
 
-    // เคลียร์
     setForm({
       name: "",
-      type: "",
+      type: "SUV",
       pricePerDay: "",
       stock: "",
       imageUrl: "",
-      fuelType: "",
-      transmission: "",
+      fuelType: "Gasoline",
+      transmission: "manual",
       seats: "",
       year: "",
     });
@@ -96,29 +99,57 @@ export default function ManageCars() {
   const handleEditCar = (car) => {
     setForm({
       name: car.name || "",
-      type: car.type || "",
+      type: car.type || "SUV",
       pricePerDay: car.pricePerDay || "",
       stock: car.stock || "",
       imageUrl: car.imageUrl || "",
-      fuelType: car.fuelType || "",
-      transmission: car.transmission || "",
+      fuelType: car.fuelType || "Gasoline",
+      transmission: car.transmission || "manual",
       seats: car.seats || "",
       year: car.year || "",
     });
     setEditId(car.id);
-    window.scrollTo({ top: 0, behavior: "smooth" }); // scroll ขึ้น
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
+  const BodyType = [
+    { value: "SUV", label: "SUV" },
+    { value: "Sedan", label: "Sedan" },
+    { value: "Sports Car", label: "Sports Car" },
+    { value: "Luxury Sedan", label: "Luxury Sedan" },
+  ];
+
+  const Transmission = [
+    { value: "manual", label: "Manual" },
+    { value: "automatic", label: "Automatic" },
+  ];
+
+  const FuelType = [
+    { value: "Gasoline", label: "Gasoline" },
+    { value: "Electric", label: "Electric" },
+    { value: "Hybrid", label: "Hybrid" },
+  ];
+
   return (
     <Paper sx={{ p: 4, m: 3 }}>
+      <Button
+        startIcon={<ArrowBackIcon />}
+        variant="outlined"
+        onClick={() => router.push("/admin")}
+        sx={{ mb: 3 }}
+      >
+        ย้อนกลับ
+      </Button>
+
       <Typography variant="h4" gutterBottom>
         {editId ? "✏️ แก้ไขรถ" : "➕➖ จัดการรถ"}
       </Typography>
-      <Divider sx={{ mb: 3 }} />
+
+      <Divider sx={{ mb: 4 }} />
 
       <Grid container spacing={2} mb={4}>
         <Grid item xs={12} sm={6}>
@@ -133,13 +164,20 @@ export default function ManageCars() {
         </Grid>
         <Grid item xs={12} sm={6}>
           <TextField
+            select
             label="ประเภทรถ"
             name="type"
             value={form.type}
             onChange={handleChange}
             fullWidth
             required
-          />
+          >
+            {BodyType.map((option) => (
+              <MenuItem key={option.value} value={option.value}>
+                {option.label}
+              </MenuItem>
+            ))}
+          </TextField>
         </Grid>
         <Grid item xs={6} sm={3}>
           <TextField
@@ -154,7 +192,7 @@ export default function ManageCars() {
         </Grid>
         <Grid item xs={6} sm={3}>
           <TextField
-            label="คงเหลือ"
+            label="จำนวนคัน"
             name="stock"
             type="number"
             value={form.stock}
@@ -187,23 +225,37 @@ export default function ManageCars() {
         </Grid>
         <Grid item xs={12} sm={6}>
           <TextField
+            select
             label="ระบบเกียร์"
             name="transmission"
             value={form.transmission}
             onChange={handleChange}
             fullWidth
             required
-          />
+          >
+            {Transmission.map((option) => (
+              <MenuItem key={option.value} value={option.value}>
+                {option.label}
+              </MenuItem>
+            ))}
+          </TextField>
         </Grid>
         <Grid item xs={12} sm={6}>
           <TextField
+            select
             label="เชื้อเพลิง"
             name="fuelType"
             value={form.fuelType}
             onChange={handleChange}
             fullWidth
             required
-          />
+          >
+            {FuelType.map((option) => (
+              <MenuItem key={option.value} value={option.value}>
+                {option.label}
+              </MenuItem>
+            ))}
+          </TextField>
         </Grid>
         <Grid item xs={12}>
           <TextField
@@ -216,64 +268,86 @@ export default function ManageCars() {
           />
         </Grid>
         <Grid item xs={12}>
-          <Button
-            variant="contained"
-            onClick={handleAddOrUpdateCar}
-            color={editId ? "warning" : "primary"}
-          >
-            {editId ? "✅ บันทึกการแก้ไข" : "➕ เพิ่มรถ"}
-          </Button>
-          {editId && (
+          <Stack direction="row" spacing={2}>
             <Button
-              sx={{ ml: 2 }}
-              onClick={() => {
-                setEditId(null);
-                setForm({
-                  name: "",
-                  type: "",
-                  pricePerDay: "",
-                  stock: "",
-                  imageUrl: "",
-                  fuelType: "",
-                  transmission: "",
-                  seats: "",
-                  year: "",
-                });
-              }}
+              variant="contained"
+              onClick={handleAddOrUpdateCar}
+              color={editId ? "warning" : "primary"}
             >
-              ❌ ยกเลิก
+              {editId ? "✅ บันทึกการแก้ไข" : "➕ เพิ่มรถ"}
             </Button>
-          )}
+            {editId && (
+              <Button
+                variant="outlined"
+                color="inherit"
+                onClick={() => {
+                  setEditId(null);
+                  setForm({
+                    name: "",
+                    type: "SUV",
+                    pricePerDay: "",
+                    stock: "",
+                    imageUrl: "",
+                    fuelType: "Gasoline",
+                    transmission: "manual",
+                    seats: "",
+                    year: "",
+                  });
+                }}
+              >
+                ❌ ยกเลิก
+              </Button>
+            )}
+          </Stack>
         </Grid>
       </Grid>
 
-      <Divider sx={{ mb: 2 }} />
+      <Divider sx={{ mb: 3 }} />
       <Typography variant="h6" gutterBottom>
         รายการรถทั้งหมด
       </Typography>
-      <Grid container spacing={2}>
+
+      <Grid container spacing={3}>
         {cars.map((car) => (
           <Grid item xs={12} sm={6} md={4} key={car.id}>
             <Card
-              sx={{ height: "100%", display: "flex", flexDirection: "column" }}
+              sx={{ display: "flex", flexDirection: "column", height: "100%" }}
             >
               <CardMedia
                 component="img"
-                height="140"
                 image={car.imageUrl}
                 alt={car.name}
-                sx={{ objectFit: "cover" }}
+                sx={{
+                  height: "180px",
+                  objectFit: "fill",
+                  width: "250px",
+                }}
               />
               <CardContent sx={{ flexGrow: 1 }}>
                 <Typography variant="h6">{car.name}</Typography>
-                <Typography>ประเภท: {car.type}</Typography>
-                <Typography>ราคา/วัน: ฿{car.pricePerDay}</Typography>
-                <Typography>ที่นั่ง: {car.seats}</Typography>
-                <Typography>ปี: {car.year}</Typography>
-                <Typography>เกียร์: {car.transmission}</Typography>
-                <Typography>เชื้อเพลิง: {car.fuelType}</Typography>
-                <Typography>คงเหลือ: {car.stock}</Typography>
-                <Box display="flex" justifyContent="flex-end" gap={1} mt={1}>
+                <Typography variant="body2" color="text.secondary">
+                  ประเภท: {car.type}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  ราคา/วัน: ฿{car.pricePerDay}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  ที่นั่ง: {car.seats}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  ปี: {car.year}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  เกียร์: {car.transmission}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  เชื้อเพลิง: {car.fuelType}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  จำนวนคัน: {car.stock}
+                </Typography>
+
+                <Box display="flex" justifyContent="flex-end" gap={1} mt={2}>
                   <Tooltip title="แก้ไข">
                     <IconButton
                       color="primary"

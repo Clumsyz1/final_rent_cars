@@ -68,9 +68,13 @@ export default function AdminDashboard() {
               <Card>
                 <CardMedia
                   component="img"
-                  width="450"
-                  height="300"
                   image={car.imageUrl}
+                  alt={car.name}
+                  sx={{
+                    width: "350px", // ทำให้รูปไม่เกิน card
+                    height: "300px", // ความสูงคงที่
+                    objectFit: "fill", // ครอบตัดรูปให้พอดี
+                  }} // ครอบตัดรูปให้พอดี}}
                 />
                 <CardContent>
                   <Typography variant="h6">{car.name}</Typography>
