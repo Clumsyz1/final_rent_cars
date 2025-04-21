@@ -9,6 +9,11 @@ import {
   Typography,
   Divider,
   ListItemIcon,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
 } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { onAuthStateChanged, signOut } from "firebase/auth";
@@ -24,6 +29,7 @@ export default function UserMenu() {
   const [anchorEl, setAnchorEl] = useState(null);
   const [user, setUser] = useState(null);
   const [role, setRole] = useState(null);
+  const [openConfirm, setOpenConfirm] = useState(false);
   const open = Boolean(anchorEl);
   const router = useRouter();
 
@@ -31,8 +37,6 @@ export default function UserMenu() {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       if (currentUser) {
         setUser(currentUser);
-
-        // โหลดข้อมูลผู้ใช้จาก Firestore
         const docRef = doc(db, "users", currentUser.uid);
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
@@ -47,19 +51,24 @@ export default function UserMenu() {
     return () => unsubscribe();
   }, []);
 
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+  const handleClick = (event) => setAnchorEl(event.currentTarget);
+  const handleClose = () => setAnchorEl(null);
 
   const handleLogout = async () => {
     await signOut(auth);
     setUser(null);
     handleClose();
     router.push("/");
+  };
+
+  const handleOpenConfirm = () => {
+    handleClose(); // ปิดเมนูก่อน
+    setOpenConfirm(true);
+  };
+  const handleCloseConfirm = () => setOpenConfirm(false);
+  const handleConfirmLogout = () => {
+    setOpenConfirm(false);
+    handleLogout();
   };
 
   if (!user) {
@@ -82,7 +91,7 @@ export default function UserMenu() {
         <Divider />
         <MenuItem
           onClick={() => {
-            router.push("/profile");
+            router.push("/account/profile");
             handleClose();
           }}
         >
@@ -93,7 +102,7 @@ export default function UserMenu() {
         </MenuItem>
         <MenuItem
           onClick={() => {
-            router.push("/bookings");
+            router.push("/account/bookings");
             handleClose();
           }}
         >
@@ -102,8 +111,6 @@ export default function UserMenu() {
           </ListItemIcon>
           Bookings
         </MenuItem>
-
-        {/* ✅ Admin Panel */}
         {role === "admin" && (
           <MenuItem
             onClick={() => {
@@ -117,15 +124,32 @@ export default function UserMenu() {
             Admin Panel
           </MenuItem>
         )}
-
         <Divider />
-        <MenuItem onClick={handleLogout}>
+        <MenuItem onClick={handleOpenConfirm}>
           <ListItemIcon>
             <LogoutIcon fontSize="small" color="error" />
           </ListItemIcon>
           <Typography color="error">Logout</Typography>
         </MenuItem>
       </Menu>
+
+      {/* 🔐 Confirm Logout Dialog */}
+      <Dialog open={openConfirm} onClose={handleCloseConfirm}>
+        <DialogTitle>ยืนยันการออกจากระบบ</DialogTitle>
+        <DialogContent>
+          <Typography>คุณแน่ใจหรือไม่ว่าต้องการออกจากระบบ?</Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseConfirm}>ยกเลิก</Button>
+          <Button
+            onClick={handleConfirmLogout}
+            variant="contained"
+            color="error"
+          >
+            ออกจากระบบ
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 }

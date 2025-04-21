@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "@/app/firebase/config";
 import styles from "./SignIn.module.css";
+import MyAppBar from "@/components/Appbar";
 
 export default function SignIn() {
   const router = useRouter();
@@ -30,7 +31,8 @@ export default function SignIn() {
   };
 
   return (
-    <div className={styles.container}>
+    <div>
+      <MyAppBar />
       <h2>เข้าสู่ระบบ - เว็บเช่ารถ</h2>
       <form onSubmit={handleSubmit} className={styles.form}>
         <input
@@ -54,10 +56,10 @@ export default function SignIn() {
         </button>
       </form>
       <p>
-      ForgotPassword? <a href="/forgot-password">ForgotPassword</a>
+        ForgotPassword? <a href="/auth/forgot-password">ForgotPassword</a>
       </p>
       <p>
-        ยังไม่มีบัญชี? <a href="/sign-up">สมัครสมาชิก</a>
+        ยังไม่มีบัญชี? <a href="/auth/sign-up">สมัครสมาชิก</a>
       </p>
     </div>
   );

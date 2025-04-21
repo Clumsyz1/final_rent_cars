@@ -19,20 +19,23 @@ export default function MyAppBar() {
   }, []);
 
   return (
-    <AppBar position="static" sx={{ backgroundColor: "#1976d2" }}>
-      <Toolbar>
-        <Typography
-          variant="h6"
-          sx={{ flexGrow: 1, fontWeight: "bold", cursor: "pointer" }}
-          onClick={() => router.push("/")}
-        >
-          🚗 Rent Car Rent Jai
-        </Typography>
+    <div>
+      <AppBar position="static" sx={{ backgroundColor: "#ADB2D4" }}>
+        <Toolbar>
+          <Typography
+            variant="h6"
+            sx={{ flexGrow: 1, fontWeight: "bold", cursor: "pointer" }}
+            onClick={() => router.push("/")}
+            color="#EEF1DA"
+          >
+            🚗 Rent Car Rent Jai
+          </Typography>
 
-        <Box>
-          <UserMenu />
-        </Box>
-      </Toolbar>
-    </AppBar>
+          <Box>
+            <UserMenu />
+          </Box>
+        </Toolbar>
+      </AppBar>
+    </div>
   );
 }

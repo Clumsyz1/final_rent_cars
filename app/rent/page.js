@@ -23,6 +23,7 @@ import { useEffect, useState } from "react";
 import { db } from "@/app/firebase/config";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { useRouter } from "next/navigation";
+import MyAppBar from "@/components/Appbar";
 
 export default function RentPage() {
   const [cars, setCars] = useState([]);
@@ -96,146 +97,149 @@ export default function RentPage() {
   if (!isClient) return null; // 👈 กัน hydration error
 
   return (
-    <Grid container>
-      {/* Sidebar Filters */}
-      <Grid item xs={12} md={3} p={3}>
-        <Paper sx={{ p: 2 }}>
-          <Typography variant="h6">Filters</Typography>
+    <div>
+      <MyAppBar />
+      <Grid container>
+        {/* Sidebar Filters */}
+        <Grid item xs={12} md={3} p={3}>
+          <Paper sx={{ p: 2 }}>
+            <Typography variant="h6">Filters</Typography>
 
-          <FormControl fullWidth sx={{ my: 2 }}>
-            <InputLabel>Body Type</InputLabel>
-            <Select
-              value={bodyType}
-              onChange={(e) => setBodyType(e.target.value)}
+            <FormControl fullWidth sx={{ my: 2 }}>
+              <InputLabel>Body Type</InputLabel>
+              <Select
+                value={bodyType}
+                onChange={(e) => setBodyType(e.target.value)}
+              >
+                <MenuItem value="any">Any</MenuItem>
+                <MenuItem value="SUV">SUV</MenuItem>
+                <MenuItem value="Sedan">Sedan</MenuItem>
+                <MenuItem value="Sports Car">Sports Car</MenuItem>
+                <MenuItem value="Luxury Sedan">Luxury Sedan</MenuItem>
+              </Select>
+            </FormControl>
+
+            <Typography>Price Range (฿)</Typography>
+            <Slider
+              value={priceRange}
+              onChange={(e, val) => setPriceRange(val)}
+              min={0}
+              max={5000}
+              valueLabelDisplay="auto"
+              sx={{ my: 2 }}
+            />
+
+            <Typography>Year</Typography>
+            <Slider
+              value={yearRange}
+              onChange={(e, val) => setYearRange(val)}
+              min={2000}
+              max={2025}
+              valueLabelDisplay="auto"
+              sx={{ my: 2 }}
+            />
+
+            <Typography>Transmission</Typography>
+            <ToggleButtonGroup
+              value={transmission}
+              exclusive
+              onChange={(e, val) => setTransmission(val)}
+              fullWidth
+              sx={{ my: 2 }}
             >
-              <MenuItem value="any">Any</MenuItem>
-              <MenuItem value="SUV">SUV</MenuItem>
-              <MenuItem value="Sedan">Sedan</MenuItem>
-              <MenuItem value="Sports Car">Sports Car</MenuItem>
-              <MenuItem value="Luxury Sedan">Luxury Sedan</MenuItem>
-            </Select>
-          </FormControl>
+              <ToggleButton value="any">Any</ToggleButton>
+              <ToggleButton value="manual">Manual</ToggleButton>
+              <ToggleButton value="automatic">Automatic</ToggleButton>
+            </ToggleButtonGroup>
 
-          <Typography>Price Range (฿)</Typography>
-          <Slider
-            value={priceRange}
-            onChange={(e, val) => setPriceRange(val)}
-            min={0}
-            max={5000}
-            valueLabelDisplay="auto"
-            sx={{ my: 2 }}
-          />
+            <FormControl fullWidth>
+              <InputLabel>Fuel Type</InputLabel>
+              <Select
+                value={fuelType}
+                onChange={(e) => setFuelType(e.target.value)}
+              >
+                <MenuItem value="any">Any</MenuItem>
+                <MenuItem value="Gasoline">Gasoline</MenuItem>
+                <MenuItem value="Electric">Electric</MenuItem>
+                <MenuItem value="Hybrid">Hybrid</MenuItem>
+              </Select>
+            </FormControl>
+          </Paper>
+        </Grid>
 
-          <Typography>Year</Typography>
-          <Slider
-            value={yearRange}
-            onChange={(e, val) => setYearRange(val)}
-            min={2000}
-            max={2025}
-            valueLabelDisplay="auto"
-            sx={{ my: 2 }}
-          />
+        {/* Car List */}
+        <Grid item xs={12} md={9} p={3}>
+          <Typography variant="h4" gutterBottom>
+            🚗 เลือกรถที่คุณต้องการเช่า
+          </Typography>
+          <Typography variant="subtitle1" gutterBottom>
+            วันที่: {startDate} - {endDate}
+          </Typography>
+          <Divider sx={{ mb: 2 }} />
 
-          <Typography>Transmission</Typography>
-          <ToggleButtonGroup
-            value={transmission}
-            exclusive
-            onChange={(e, val) => setTransmission(val)}
-            fullWidth
-            sx={{ my: 2 }}
-          >
-            <ToggleButton value="any">Any</ToggleButton>
-            <ToggleButton value="manual">Manual</ToggleButton>
-            <ToggleButton value="automatic">Automatic</ToggleButton>
-          </ToggleButtonGroup>
-
-          <FormControl fullWidth>
-            <InputLabel>Fuel Type</InputLabel>
-            <Select
-              value={fuelType}
-              onChange={(e) => setFuelType(e.target.value)}
-            >
-              <MenuItem value="any">Any</MenuItem>
-              <MenuItem value="Gasoline">Gasoline</MenuItem>
-              <MenuItem value="Electric">Electric</MenuItem>
-              <MenuItem value="Hybrid">Hybrid</MenuItem>
-            </Select>
-          </FormControl>
-        </Paper>
+          {loading ? (
+            <Grid container justifyContent="center" mt={5}>
+              <CircularProgress />
+            </Grid>
+          ) : (
+            <Grid container spacing={3}>
+              {filteredCars.map((car) => {
+                const available = getAvailableStock(car.id, car.stock);
+                const outOfStock = available <= 0;
+                return (
+                  <Grid item xs={12} sm={6} md={4} key={car.id}>
+                    <Card>
+                      <CardMedia
+                        component="img"
+                        image={car.imageUrl}
+                        alt={car.name}
+                        sx={{
+                          width: "250px", // ทำให้รูปไม่เกิน card
+                          height: "160px", // ความสูงคงที่
+                          objectFit: "fill", // ครอบตัดรูปให้พอดี
+                        }}
+                      />
+                      <CardContent>
+                        <Typography variant="h6">{car.name}</Typography>
+                        <Typography variant="body2" gutterBottom>
+                          {car.type}
+                        </Typography>
+                        <Box display="flex" gap={1} fontSize={14}>
+                          👥 {car.seats} | ⚙ {car.transmission} | ⛽{" "}
+                          {car.fuelType}
+                        </Box>
+                        <Typography mt={1}>฿{car.pricePerDay}/day</Typography>
+                        <Typography
+                          color={outOfStock ? "error" : "primary"}
+                          fontWeight="bold"
+                          mt={1}
+                        >
+                          {outOfStock
+                            ? "❌ Out of Stock"
+                            : `✅ เหลือ ${available} คัน`}
+                        </Typography>
+                        <Button
+                          variant="contained"
+                          fullWidth
+                          disabled={outOfStock}
+                          sx={{ mt: 1 }}
+                          onClick={() =>
+                            router.push(
+                              `/confirm?carId=${car.id}&start=${startDate}&end=${endDate}`
+                            )
+                          }
+                        >
+                          Rent now
+                        </Button>
+                      </CardContent>
+                    </Card>
+                  </Grid>
+                );
+              })}
+            </Grid>
+          )}
+        </Grid>
       </Grid>
-
-      {/* Car List */}
-      <Grid item xs={12} md={9} p={3}>
-        <Typography variant="h4" gutterBottom>
-          🚗 เลือกรถที่คุณต้องการเช่า
-        </Typography>
-        <Typography variant="subtitle1" gutterBottom>
-          วันที่: {startDate} - {endDate}
-        </Typography>
-        <Divider sx={{ mb: 2 }} />
-
-        {loading ? (
-          <Grid container justifyContent="center" mt={5}>
-            <CircularProgress />
-          </Grid>
-        ) : (
-          <Grid container spacing={3}>
-            {filteredCars.map((car) => {
-              const available = getAvailableStock(car.id, car.stock);
-              const outOfStock = available <= 0;
-              return (
-                <Grid item xs={12} sm={6} md={4} key={car.id}>
-                  <Card>
-                    <CardMedia
-                      component="img"
-                      image={car.imageUrl}
-                      alt={car.name}
-                      sx={{
-                        width: "250px", // ทำให้รูปไม่เกิน card
-                        height: "160px", // ความสูงคงที่
-                        objectFit: "fill", // ครอบตัดรูปให้พอดี
-                      }}
-                    />
-                    <CardContent>
-                      <Typography variant="h6">{car.name}</Typography>
-                      <Typography variant="body2" gutterBottom>
-                        {car.type}
-                      </Typography>
-                      <Box display="flex" gap={1} fontSize={14}>
-                        👥 {car.seats} | ⚙ {car.transmission} | ⛽{" "}
-                        {car.fuelType}
-                      </Box>
-                      <Typography mt={1}>฿{car.pricePerDay}/day</Typography>
-                      <Typography
-                        color={outOfStock ? "error" : "primary"}
-                        fontWeight="bold"
-                        mt={1}
-                      >
-                        {outOfStock
-                          ? "❌ Out of Stock"
-                          : `✅ เหลือ ${available} คัน`}
-                      </Typography>
-                      <Button
-                        variant="contained"
-                        fullWidth
-                        disabled={outOfStock}
-                        sx={{ mt: 1 }}
-                        onClick={() =>
-                          router.push(
-                            `/confirm?carId=${car.id}&start=${startDate}&end=${endDate}`
-                          )
-                        }
-                      >
-                        Rent now
-                      </Button>
-                    </CardContent>
-                  </Card>
-                </Grid>
-              );
-            })}
-          </Grid>
-        )}
-      </Grid>
-    </Grid>
+    </div>
   );
 }

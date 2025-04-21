@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { auth } from "@/app/firebase/config";
 import styles from "./SignUp.module.css";
 import { createUserWithEmailAndPassword } from "firebase/auth";
+import MyAppBar from "@/components/Appbar";
 
 export default function SignUp() {
   const router = useRouter();
@@ -19,7 +20,7 @@ export default function SignUp() {
       setEmail("");
       setPassword("");
       setConfirmPassword("");
-      router.push("/sign-in"); // เปลี่ยนไปหน้า signin หลังสมัครสำเร็จ
+      router.push("/auth/sign-in"); // เปลี่ยนไปหน้า signin หลังสมัครสำเร็จ
     } catch (e) {
       console.error("Sign up error:", e.message);
       alert("เกิดข้อผิดพลาด: " + e.message);
@@ -36,7 +37,8 @@ export default function SignUp() {
   };
 
   return (
-    <div className={styles.container}>
+    <div>
+      <MyAppBar />
       <h2>สมัครสมาชิก - เว็บเช่ารถ</h2>
       <form onSubmit={handleSubmit} className={styles.form}>
         <input
@@ -68,7 +70,7 @@ export default function SignUp() {
         </button>
       </form>
       <p>
-        มีบัญชีอยู่แล้ว? <a href="/sign-in">เข้าสู่ระบบ</a>
+        มีบัญชีอยู่แล้ว? <a href="/auth/sign-in">เข้าสู่ระบบ</a>
       </p>
     </div>
   );

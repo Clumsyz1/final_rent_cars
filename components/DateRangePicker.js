@@ -55,8 +55,22 @@ export default function DateRangePicker() {
         />
       </Grid>
       <Grid item xs={12}>
-        <Button variant="contained" fullWidth onClick={handleNext}>
-          ถัดไป
+        <Button
+          variant="contained"
+          fullWidth
+          onClick={handleNext}
+          sx={{
+            backgroundColor: "#1E2A78",
+            borderRadius: "30px",
+            px: 5,
+            py: 1.5,
+            fontWeight: 600,
+            "&:hover": {
+              backgroundColor: "#2c3e91",
+            },
+          }}
+        >
+          ค้นหารถให้เช่า
         </Button>
       </Grid>
     </Grid>

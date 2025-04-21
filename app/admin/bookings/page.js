@@ -82,8 +82,8 @@ export default function AdminBookings() {
                     image={booking.car.imageUrl}
                     alt={booking.car.name}
                     sx={{
-                      width: "350px", // ทำให้รูปไม่เกิน card
-                      height: "300px", // ความสูงคงที่
+                      width: "300px", // ทำให้รูปไม่เกิน card
+                      height: "230px", // ความสูงคงที่
                       objectFit: "fill", // ครอบตัดรูปให้พอดี
                     }} // ครอบตัดรูปให้พอดี}}
                   />
