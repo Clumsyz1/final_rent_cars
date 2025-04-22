@@ -49,6 +49,12 @@ export default function RentPage() {
       setStartDate(params.get("start"));
       setEndDate(params.get("end"));
       setIsClient(true); // เปลี่ยนเป็น true เมื่อ client โหลดเสร็จ
+
+      // จัดการกับ DOM หรือ style
+      const someElement = document.getElementById("someElement");
+      if (someElement) {
+        someElement.style.color = "blue"; // เปลี่ยนสีของ element
+      }
     }
   }, []);
 
