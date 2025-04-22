@@ -101,7 +101,7 @@ export default function RentPage() {
       <MyAppBar />
       <Grid container>
         {/* Sidebar Filters */}
-        <Grid item xs={12} md={3} p={3}>
+        <Grid item sx={{ width: 350 }} p={3}>
           <Paper sx={{ p: 2 }}>
             <Typography variant="h6">Filters</Typography>
 
@@ -168,76 +168,78 @@ export default function RentPage() {
         </Grid>
 
         {/* Car List */}
-        <Grid item xs={12} md={9} p={3}>
-          <Typography variant="h4" gutterBottom>
-            🚗 เลือกรถที่คุณต้องการเช่า
-          </Typography>
-          <Typography variant="subtitle1" gutterBottom>
-            วันที่: {startDate} - {endDate}
-          </Typography>
-          <Divider sx={{ mb: 2 }} />
+        <Grid item xs p={3}>
+          <Box sx={{ maxWidth: "1200px", mx: "auto" }}>
+            <Typography variant="h4" gutterBottom>
+              🚗 เลือกรถที่คุณต้องการเช่า
+            </Typography>
+            <Typography variant="subtitle1" gutterBottom>
+              วันที่: {startDate} - {endDate}
+            </Typography>
+            <Divider sx={{ mb: 2 }} />
 
-          {loading ? (
-            <Grid container justifyContent="center" mt={5}>
-              <CircularProgress />
-            </Grid>
-          ) : (
-            <Grid container spacing={3}>
-              {filteredCars.map((car) => {
-                const available = getAvailableStock(car.id, car.stock);
-                const outOfStock = available <= 0;
-                return (
-                  <Grid item xs={12} sm={6} md={4} key={car.id}>
-                    <Card>
-                      <CardMedia
-                        component="img"
-                        image={car.imageUrl}
-                        alt={car.name}
-                        sx={{
-                          width: "250px", // ทำให้รูปไม่เกิน card
-                          height: "160px", // ความสูงคงที่
-                          objectFit: "fill", // ครอบตัดรูปให้พอดี
-                        }}
-                      />
-                      <CardContent>
-                        <Typography variant="h6">{car.name}</Typography>
-                        <Typography variant="body2" gutterBottom>
-                          {car.type}
-                        </Typography>
-                        <Box display="flex" gap={1} fontSize={14}>
-                          👥 {car.seats} | ⚙ {car.transmission} | ⛽{" "}
-                          {car.fuelType}
-                        </Box>
-                        <Typography mt={1}>฿{car.pricePerDay}/day</Typography>
-                        <Typography
-                          color={outOfStock ? "error" : "primary"}
-                          fontWeight="bold"
-                          mt={1}
-                        >
-                          {outOfStock
-                            ? "❌ Out of Stock"
-                            : `✅ เหลือ ${available} คัน`}
-                        </Typography>
-                        <Button
-                          variant="contained"
-                          fullWidth
-                          disabled={outOfStock}
-                          sx={{ mt: 1 }}
-                          onClick={() =>
-                            router.push(
-                              `/confirm?carId=${car.id}&start=${startDate}&end=${endDate}`
-                            )
-                          }
-                        >
-                          Rent now
-                        </Button>
-                      </CardContent>
-                    </Card>
-                  </Grid>
-                );
-              })}
-            </Grid>
-          )}
+            {loading ? (
+              <Grid container justifyContent="center" mt={5}>
+                <CircularProgress />
+              </Grid>
+            ) : (
+              <Grid container spacing={2}>
+                {filteredCars.map((car) => {
+                  const available = getAvailableStock(car.id, car.stock);
+                  const outOfStock = available <= 0;
+                  return (
+                    <Grid item xs={12} sm={6} lg={3} key={car.id}>
+                      <Card>
+                        <CardMedia
+                          component="img"
+                          image={car.imageUrl}
+                          alt={car.name}
+                          sx={{
+                            width: "250px",
+                            height: "160px",
+                            objectFit: "fill",
+                          }}
+                        />
+                        <CardContent>
+                          <Typography variant="h6">{car.name}</Typography>
+                          <Typography variant="body2" gutterBottom>
+                            {car.type}
+                          </Typography>
+                          <Box display="flex" gap={1} fontSize={14}>
+                            👥 {car.seats} | ⚙ {car.transmission} | ⛽{" "}
+                            {car.fuelType}
+                          </Box>
+                          <Typography mt={1}>฿{car.pricePerDay}/day</Typography>
+                          <Typography
+                            color={outOfStock ? "error" : "primary"}
+                            fontWeight="bold"
+                            mt={1}
+                          >
+                            {outOfStock
+                              ? "❌ Out of Stock"
+                              : `✅ เหลือ ${available} คัน`}
+                          </Typography>
+                          <Button
+                            variant="contained"
+                            fullWidth
+                            disabled={outOfStock}
+                            sx={{ mt: 1 }}
+                            onClick={() =>
+                              router.push(
+                                `/confirm?carId=${car.id}&start=${startDate}&end=${endDate}`
+                              )
+                            }
+                          >
+                            Rent now
+                          </Button>
+                        </CardContent>
+                      </Card>
+                    </Grid>
+                  );
+                })}
+              </Grid>
+            )}
+          </Box>
         </Grid>
       </Grid>
     </div>
