@@ -1,37 +1,42 @@
+/* กำหนดสไตล์ของ container โดยให้มีระยะห่างจากด้านบน 64px */
 .container {
-  margin-top: 64px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  margin-top: 64px; /* ระยะห่างจากด้านบน */
+  display: flex; /* ใช้ Flexbox */
+  flex-direction: column; /* จัดเรียงคอนเทนต์เป็นคอลัมน์ */
+  align-items: center; /* จัดกึ่งกลางแนวนอน */
 }
 
+/* กำหนดสไตล์สำหรับ Paper ที่เป็นองค์ประกอบหลักในหน้า */
 .paper {
-  padding: 32px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 16px;
-  border-radius: 8px;
-  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.2);
-  max-width: 400px;
-  width: 100%;
+  padding: 32px; /* เพิ่มพื้นที่ภายใน (padding) */
+  display: flex; /* ใช้ Flexbox */
+  flex-direction: column; /* จัดเรียงคอนเทนต์เป็นคอลัมน์ */
+  align-items: center; /* จัดกึ่งกลางแนวนอน */
+  gap: 16px; /* ระยะห่างระหว่างองค์ประกอบภายใน */
+  border-radius: 8px; /* มุมโค้งมน */
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.2); /* เงาของกล่อง */
+  max-width: 400px; /* ขนาดกว้างสูงสุด 400px */
+  width: 100%; /* ความกว้างเต็มที่ของพาเรนต์ */
 }
 
+/* กำหนดสไตล์ของ title (ชื่อหัวข้อ) */
 .title {
-  margin-bottom: 24px;
-  color: #1976d2;
-  font-weight: 600;
-  text-align: center;
+  margin-bottom: 24px; /* ระยะห่างด้านล่าง */
+  color: #1976d2; /* สีฟ้า */
+  font-weight: 600; /* ตัวหนา */
+  text-align: center; /* จัดข้อความให้อยู่กลาง */
 }
 
+/* กำหนดสไตล์ของ divider (เส้นแบ่ง) */
 .divider {
-  width: 80%;
-  margin-bottom: 24px;
+  width: 80%; /* ความกว้าง 80% ขององค์ประกอบพาเรนต์ */
+  margin-bottom: 24px; /* ระยะห่างด้านล่าง */
 }
 
+/* กำหนดสไตล์ของปุ่ม */
 .button {
-  width: 100%;
-  padding: 16px;
-  border-radius: 8px;
-  font-weight: 500;
+  width: 100%; /* ความกว้างเต็มที่ */
+  padding: 16px; /* เพิ่มพื้นที่ภายใน */
+  border-radius: 8px; /* มุมโค้งมน */
+  font-weight: 500; /* ตัวหนาปานกลาง */
 }

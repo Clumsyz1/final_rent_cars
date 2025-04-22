@@ -13,17 +13,18 @@ import {
 } from "@mui/material";
 import { useRouter } from "next/navigation";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import { db } from "@/app/firebase/config";
-import { collection, getDocs } from "firebase/firestore";
-import MyAppBar from "@/components/Appbar";
+import { db } from "@/app/firebase/config"; // เชื่อมต่อกับ Firebase
+import { collection, getDocs } from "firebase/firestore"; // ฟังก์ชันที่ใช้ดึงข้อมูลจาก Firestore
+import MyAppBar from "@/components/Appbar"; // ใช้ AppBar ที่กำหนดเอง
 
 export default function AdminDashboard() {
-  const [cars, setCars] = useState([]);
-  const [bookings, setBookings] = useState([]);
+  const [cars, setCars] = useState([]); // สถานะของข้อมูลรถ
+  const [bookings, setBookings] = useState([]); // สถานะของข้อมูลการจอง
   const router = useRouter();
 
   useEffect(() => {
     const fetchData = async () => {
+      // ดึงข้อมูลจากคอลเล็กชัน 'cars' และ 'bookings' จาก Firestore
       const carSnapshot = await getDocs(collection(db, "cars"));
       const bookingSnapshot = await getDocs(collection(db, "bookings"));
 
@@ -34,16 +35,17 @@ export default function AdminDashboard() {
 
       const bookingList = bookingSnapshot.docs.map((doc) => doc.data());
 
-      setCars(carList);
-      setBookings(bookingList);
+      setCars(carList); // อัปเดตข้อมูลรถยนต์
+      setBookings(bookingList); // อัปเดตข้อมูลการจอง
     };
 
-    fetchData();
+    fetchData(); // เรียกใช้งานฟังก์ชันดึงข้อมูล
   }, []);
 
   const getAvailableStock = (carId, stock) => {
+    // ฟังก์ชันคำนวณจำนวนรถที่เหลือจากการจอง
     const booked = bookings.filter((b) => b.carId === carId).length;
-    return stock - booked;
+    return stock - booked; // คำนวณจำนวนรถที่เหลือ
   };
 
   return (
@@ -54,7 +56,7 @@ export default function AdminDashboard() {
         <Button
           startIcon={<ArrowBackIcon />}
           variant="outlined"
-          onClick={() => router.push("/admin")}
+          onClick={() => router.push("/admin")} // ปุ่มย้อนกลับไปที่หน้าผู้ดูแลระบบ
           sx={{ mb: 2 }}
         >
           ย้อนกลับ
@@ -66,26 +68,31 @@ export default function AdminDashboard() {
         <Divider sx={{ mb: 3 }} />
         <Grid container spacing={2}>
           {cars.map((car) => {
-            const available = getAvailableStock(car.id, car.stock);
+            const available = getAvailableStock(car.id, car.stock); // คำนวณจำนวนรถที่เหลือ
             return (
               <Grid item xs={12} sm={6} md={4} key={car.id}>
                 <Card>
                   <CardMedia
                     component="img"
-                    image={car.imageUrl}
+                    image={car.imageUrl} // แสดงภาพรถ
                     alt={car.name}
                     sx={{
-                      width: "380px", // ทำให้รูปไม่เกิน card
-                      height: "290px", // ความสูงคงที่
+                      width: "380px", // กำหนดความกว้างของรูป
+                      height: "290px", // กำหนดความสูงของรูป
                       objectFit: "fill", // ครอบตัดรูปให้พอดี
-                    }} // ครอบตัดรูปให้พอดี}}
+                    }}
                   />
                   <CardContent>
-                    <Typography variant="h6">{car.name}</Typography>
-                    <Typography>ประเภท: {car.type}</Typography>
-                    <Typography>ราคา/วัน: ฿{car.pricePerDay}</Typography>
+                    <Typography variant="h6">{car.name}</Typography> //
+                    แสดงชื่อรถ
+                    <Typography>ประเภท: {car.type}</Typography> //
+                    แสดงประเภทของรถ
+                    <Typography>ราคา/วัน: ฿{car.pricePerDay}</Typography> //
+                    แสดงราคาเช่าต่อวัน
                     <Typography color={available <= 0 ? "error" : "primary"}>
-                      คงเหลือ: {available} คัน
+                      {" "}
+                      // ถ้าคงเหลือ 0 จะเป็นสีแดง คงเหลือ: {available} คัน //
+                      แสดงจำนวนรถที่เหลือ
                     </Typography>
                   </CardContent>
                 </Card>

@@ -13,53 +13,32 @@ import {
 import { sendPasswordResetEmail } from "firebase/auth";
 import { auth } from "@/app/firebase/config";
 import MyAppBar from "@/components/Appbar";
+import styles from "./ForgotPasswordPage.module.css"; // นำเข้าคลาสจาก CSS Module
 
 export default function ForgotPasswordPage() {
-  const [email, setEmail] = useState("");
-  const [message, setMessage] = useState("");
-  const [error, setError] = useState("");
+  const [email, setEmail] = useState(""); // สถานะสำหรับอีเมล
+  const [message, setMessage] = useState(""); // สถานะสำหรับข้อความสำเร็จ
+  const [error, setError] = useState(""); // สถานะสำหรับข้อผิดพลาด
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault(); // ป้องกันการรีเฟรชหน้าเมื่อส่งฟอร์ม
     try {
-      await sendPasswordResetEmail(auth, email);
-      setMessage("ส่งอีเมลรีเซ็ตรหัสผ่านแล้ว กรุณาตรวจสอบกล่องข้อความของคุณ");
-      setEmail("");
+      await sendPasswordResetEmail(auth, email); // ส่งอีเมลรีเซ็ตรหัสผ่าน
+      setMessage("ส่งอีเมลรีเซ็ตรหัสผ่านแล้ว กรุณาตรวจสอบกล่องข้อความของคุณ"); // แจ้งข้อความสำเร็จ
+      setEmail(""); // เคลียร์อีเมลหลังจากส่งสำเร็จ
     } catch (err) {
-      setError("เกิดข้อผิดพลาด: " + err.message);
+      setError("เกิดข้อผิดพลาด: " + err.message); // แสดงข้อความข้อผิดพลาด
     }
   };
 
   return (
     <div>
-      <MyAppBar />
-      <Box
-        sx={{
-          minHeight: "100vh",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          background: "linear-gradient(to right, #e0f7fa, #ffffff)",
-          p: 2,
-        }}
-      >
-        <Paper
-          elevation={5}
-          sx={{
-            p: 4,
-            maxWidth: 450,
-            width: "100%",
-            borderRadius: 3,
-            boxShadow: "0px 5px 15px rgba(0,0,0,0.1)",
-          }}
-        >
-          <Typography
-            variant="h5"
-            fontWeight={600}
-            textAlign="center"
-            color="primary"
-            mb={3}
-          >
+      <MyAppBar /> {/* แสดงแถบเมนูด้านบน */}
+      <Box className={styles.container}>
+        {" "}
+        {/* ใช้คลาสจาก CSS Module */}
+        <Paper className={styles.paper}>
+          <Typography variant="h5" className={styles.title}>
             ลืมรหัสผ่าน
           </Typography>
 
@@ -72,37 +51,25 @@ export default function ForgotPasswordPage() {
               fullWidth
               required
               margin="normal"
+              className={styles.textField}
             />
             <Button
               type="submit"
               variant="contained"
               fullWidth
-              sx={{ mt: 2, py: 1.5, fontWeight: 600 }}
+              className={styles.submitButton}
             >
               ส่งลิงก์รีเซ็ตรหัสผ่าน
             </Button>
           </form>
 
-          <Typography
-            variant="body2"
-            textAlign="center"
-            mt={3}
-            color="text.secondary"
-          >
+          <Typography variant="body2" className={styles.footer}>
             กลับไปหน้า{" "}
-            <a
-              href="/auth/sign-in"
-              style={{
-                color: "#1976d2",
-                fontWeight: "bold",
-                textDecoration: "none",
-              }}
-            >
+            <a href="/auth/sign-in" className={styles.link}>
               เข้าสู่ระบบ
             </a>
           </Typography>
         </Paper>
-
         {/* Snackbar สำหรับแจ้งเตือน */}
         <Snackbar
           open={!!message}

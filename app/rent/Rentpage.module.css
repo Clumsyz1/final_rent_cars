@@ -1,83 +1,100 @@
 /* RentPage.module.css */
+
+/* คอนเทนเนอร์หลักสำหรับการจัดวางหน้า */
 .container {
-  display: flex;
+  display: flex; /* ใช้ flexbox ในการจัดเรียงส่วนต่างๆ */
 }
 
+/* ส่วนฟิลเตอร์ที่ใช้กรองผลลัพธ์ */
 .filtersContainer {
-  width: 350px;
-  padding: 16px;
+  width: 350px; /* กำหนดความกว้างของฟิลเตอร์ */
+  padding: 16px; /* เพิ่มระยะห่างภายใน */
 }
 
+/* กระดาษของฟิลเตอร์ที่มี padding */
 .filtersPaper {
-  padding: 16px;
+  padding: 16px; /* เพิ่มระยะห่างภายในฟิลเตอร์ */
 }
 
+/* ชื่อหัวข้อหลักของฟิลเตอร์ */
 .title {
-  font-size: 2rem;
-  font-weight: 700;
+  font-size: 2rem; /* ขนาดตัวอักษร */
+  font-weight: 700; /* ทำให้ตัวอักษรหนา */
 }
 
+/* คำอธิบายใต้ชื่อฟิลเตอร์ */
 .subtitle {
-  font-size: 1rem;
-  margin-top: 16px;
+  font-size: 1rem; /* ขนาดตัวอักษร */
+  margin-top: 16px; /* ระยะห่างด้านบน */
 }
 
+/* สไลเดอร์ที่ใช้เลือกค่าต่างๆ */
 .slider {
-  margin-top: 16px;
+  margin-top: 16px; /* ระยะห่างด้านบน */
 }
 
+/* คอนเทนเนอร์สำหรับแสดงรายการรถ */
 .carListContainer {
-  max-width: 1200px;
-  margin: 0 auto;
+  max-width: 1200px; /* กำหนดความกว้างสูงสุด */
+  margin: 0 auto; /* จัดกึ่งกลาง */
 }
 
+/* ชื่อหัวข้อของรายการรถ */
 .carListTitle {
-  font-size: 2.25rem;
-  font-weight: 700;
-  margin-bottom: 16px;
+  font-size: 2.25rem; /* ขนาดตัวอักษร */
+  font-weight: 700; /* ทำให้ตัวอักษรหนา */
+  margin-bottom: 16px; /* ระยะห่างด้านล่าง */
 }
 
+/* คำอธิบายใต้ชื่อหัวข้อของรายการรถ */
 .carListSubtitle {
-  font-size: 1rem;
-  margin-bottom: 16px;
+  font-size: 1rem; /* ขนาดตัวอักษร */
+  margin-bottom: 16px; /* ระยะห่างด้านล่าง */
 }
 
+/* การ์ดของแต่ละรถ */
 .carCard {
-  width: 250px;
-  display: flex;
-  flex-direction: column;
+  width: 250px; /* ความกว้างของการ์ด */
+  display: flex; /* ใช้ flexbox */
+  flex-direction: column; /* จัดให้เนื้อหาภายในแสดงในแนวตั้ง */
 }
 
+/* รูปภาพของรถ */
 .carImage {
-  width: 250px;
-  height: 160px;
-  object-fit: fill;
+  width: 250px; /* ความกว้างของรูปภาพ */
+  height: 160px; /* ความสูงของรูปภาพ */
+  object-fit: fill; /* การปรับขนาดของรูปภาพให้เต็มช่อง */
 }
 
+/* รายละเอียดของรถในการ์ด */
 .carDetails {
-  display: flex;
-  gap: 8px;
-  font-size: 0.875rem;
-  margin-top: 8px;
+  display: flex; /* ใช้ flexbox */
+  gap: 8px; /* ระยะห่างระหว่างแต่ละรายละเอียด */
+  font-size: 0.875rem; /* ขนาดตัวอักษร */
+  margin-top: 8px; /* ระยะห่างด้านบน */
 }
 
+/* ราคาของรถ */
 .carPrice {
-  font-size: 1.1rem;
-  font-weight: 700;
-  margin-top: 8px;
+  font-size: 1.1rem; /* ขนาดตัวอักษร */
+  font-weight: 700; /* ทำให้ตัวอักษรหนา */
+  margin-top: 8px; /* ระยะห่างด้านบน */
 }
 
+/* สถานะของสินค้าหรือรถที่มีอยู่ */
 .stockStatus {
-  font-weight: 700;
-  margin-top: 8px;
+  font-weight: 700; /* ทำให้ตัวอักษรหนา */
+  margin-top: 8px; /* ระยะห่างด้านบน */
 }
 
+/* ปุ่มเช่ารถ */
 .rentButton {
-  margin-top: 16px;
+  margin-top: 16px; /* ระยะห่างด้านบน */
 }
 
+/* สไตล์การแสดงสถานะกำลังโหลด */
 .loading {
-  display: flex;
-  justify-content: center;
-  margin-top: 32px;
+  display: flex; /* ใช้ flexbox */
+  justify-content: center; /* จัดให้เนื้อหาตรงกลาง */
+  margin-top: 32px; /* ระยะห่างด้านบน */
 }

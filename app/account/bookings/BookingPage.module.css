@@ -1,26 +1,30 @@
+/* สไตล์หลักสำหรับหน้า BookingPage */
 .container {
-  background-color: #f5f7fa;
-  min-height: 100vh;
+  background-color: #f5f7fa; /* กำหนดพื้นหลังเป็นสีเทาอ่อน */
+  min-height: 100vh; /* ความสูงของ container คือเต็มหน้าจอ */
 }
 
+/* สไตล์สำหรับ Sidebar */
 .sidebar {
-  background-color: #ffffff;
-  padding: 24px;
-  border-radius: 16px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  background-color: #ffffff; /* พื้นหลังสีขาว */
+  padding: 24px; /* ช่องว่างภายใน 24px */
+  border-radius: 16px; /* มุมโค้งมน 16px */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); /* เงาเบาๆ รอบๆ Sidebar */
 }
 
+/* สไตล์สำหรับ Content Area */
 .content {
-  background-color: #ffffff;
-  padding: 32px;
-  border-radius: 16px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  background-color: #ffffff; /* พื้นหลังสีขาว */
+  padding: 32px; /* ช่องว่างภายใน 32px */
+  border-radius: 16px; /* มุมโค้งมน 16px */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); /* เงาเบาๆ รอบๆ Content */
 }
 
+/* สไตล์สำหรับรูปภาพของรถที่แสดงในประวัติการจอง */
 .carImage {
-  width: 180px;
-  height: 130px;
-  border-radius: 12px;
-  object-fit: cover;
-  margin-right: 16px;
+  width: 180px; /* กำหนดความกว้างของรูปภาพ */
+  height: 130px; /* กำหนดความสูงของรูปภาพ */
+  border-radius: 12px; /* มุมโค้งมน 12px */
+  object-fit: cover; /* ให้รูปภาพเต็มกรอบ โดยไม่เสียสัดส่วน */
+  margin-right: 16px; /* ช่องว่างด้านขวาของรูปภาพ */
 }

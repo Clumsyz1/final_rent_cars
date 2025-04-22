@@ -19,32 +19,34 @@ import MyAppBar from "@/components/Appbar";
 
 export default function ConfirmPage() {
   const router = useRouter();
-  const [car, setCar] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [user, setUser] = useState(null);
+  const [car, setCar] = useState(null); // เก็บข้อมูลของรถที่เลือก
+  const [loading, setLoading] = useState(true); // ใช้สำหรับเช็คสถานะการโหลดข้อมูล
+  const [user, setUser] = useState(null); // เก็บข้อมูลผู้ใช้ที่เข้าสู่ระบบ
 
-  const [carId, setCarId] = useState(null);
-  const [startDate, setStartDate] = useState(null);
-  const [endDate, setEndDate] = useState(null);
+  const [carId, setCarId] = useState(null); // เก็บ carId ที่ถูกส่งมาจาก query string
+  const [startDate, setStartDate] = useState(null); // เก็บวันที่เริ่มเช่า
+  const [endDate, setEndDate] = useState(null); // เก็บวันที่คืนรถ
 
-  const [days, setDays] = useState(0);
-  const [total, setTotal] = useState(0);
+  const [days, setDays] = useState(0); // เก็บจำนวนวันที่เช่า
+  const [total, setTotal] = useState(0); // เก็บราคารวมทั้งหมด
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    setCarId(params.get("carId"));
-    setStartDate(params.get("start"));
-    setEndDate(params.get("end"));
+    setCarId(params.get("carId")); // ดึง carId จาก URL
+    setStartDate(params.get("start")); // ดึงวันที่เริ่มเช่า
+    setEndDate(params.get("end")); // ดึงวันที่คืนรถ
   }, []);
 
   useEffect(() => {
     if (!carId || !startDate || !endDate) return;
 
+    // เช็คสถานะผู้ใช้ที่เข้าสู่ระบบ
     onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
     });
 
     const fetchCar = async () => {
+      // ตรวจสอบข้อมูล carId, startDate, endDate หากไม่ครบให้ไปหน้าหลัก
       if (
         !carId ||
         !startDate ||
@@ -57,31 +59,35 @@ export default function ConfirmPage() {
         return;
       }
 
+      // ดึงข้อมูลรถจาก Firestore
       const carRef = doc(db, "cars", carId);
       const carSnap = await getDoc(carRef);
       if (carSnap.exists()) {
         const carData = { id: carSnap.id, ...carSnap.data() };
         setCar(carData);
 
+        // คำนวณจำนวนวันที่เช่าและราคารวม
         const start = new Date(startDate);
         const end = new Date(endDate);
         const diffDays = Math.ceil((end - start) / (1000 * 60 * 60 * 24)) + 1;
 
         setDays(diffDays);
-        setTotal(carData.pricePerDay * diffDays);
+        setTotal(carData.pricePerDay * diffDays); // คำนวณราคารวม
       }
-      setLoading(false);
+      setLoading(false); // เมื่อโหลดเสร็จให้เปลี่ยนสถานะ loading
     };
 
-    fetchCar();
+    fetchCar(); // เรียกใช้ฟังก์ชัน fetchCar
   }, [carId, startDate, endDate]);
 
+  // ฟังก์ชันสำหรับยืนยันการจอง
   const handleConfirmBooking = async () => {
     if (!user) {
-      alert("กรุณาเข้าสู่ระบบก่อน");
+      alert("กรุณาเข้าสู่ระบบก่อน"); // หากผู้ใช้ยังไม่ได้เข้าสู่ระบบ ให้แจ้งเตือน
       return;
     }
 
+    // เพิ่มข้อมูลการจองลงใน Firestore
     await addDoc(collection(db, "bookings"), {
       carId,
       userId: user.uid,
@@ -90,10 +96,11 @@ export default function ConfirmPage() {
       createdAt: new Date().toISOString(),
     });
 
-    alert("การจองเสร็จสิ้น");
-    router.push("/");
+    alert("การจองเสร็จสิ้น"); // แจ้งเตือนการจองเสร็จสิ้น
+    router.push("/"); // พาผู้ใช้กลับไปหน้าหลัก
   };
 
+  // หากกำลังโหลดข้อมูลจะแสดง CircularProgress
   if (loading) {
     return (
       <Grid container justifyContent="center" mt={10}>

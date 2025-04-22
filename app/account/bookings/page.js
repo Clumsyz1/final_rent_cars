@@ -1,5 +1,6 @@
 "use client";
 
+// นำเข้าคอมโพเนนต์และฟังก์ชันจาก MUI, React และ Firebase
 import {
   Typography,
   Grid,
@@ -26,25 +27,28 @@ import MyAppBar from "@/components/Appbar";
 import styles from "./BookingPage.module.css";
 
 export default function BookingPage() {
+  // กำหนด state สำหรับข้อมูลผู้ใช้, การจอง, และสถานะการโหลด
   const [user, setUser] = useState(null);
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
+    // เช็คสถานะการล็อกอินของผู้ใช้
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       if (!currentUser) {
-        router.push("/sign-in");
+        router.push("/sign-in"); // ถ้าไม่ได้ล็อกอินจะไปที่หน้า Sign In
       } else {
         setUser(currentUser);
-        await fetchBookings(currentUser.uid);
+        await fetchBookings(currentUser.uid); // ดึงข้อมูลการจองของผู้ใช้
       }
     });
 
-    return () => unsubscribe();
+    return () => unsubscribe(); // ยกเลิกการติดตามสถานะผู้ใช้เมื่อออกจากหน้า
   }, []);
 
   const fetchBookings = async (uid) => {
+    // ดึงข้อมูลการจองจาก Firebase
     const q = query(collection(db, "bookings"), where("userId", "==", uid));
     const querySnapshot = await getDocs(q);
 
@@ -61,14 +65,14 @@ export default function BookingPage() {
     );
 
     setBookings(bookingList);
-    setLoading(false);
+    setLoading(false); // เปลี่ยนสถานะการโหลด
   };
 
   return (
     <div className={styles.container}>
       <MyAppBar />
       <Grid container spacing={3} p={4}>
-        {/* Sidebar */}
+        {/* Sidebar - ส่วนของเมนูข้าง */}
         <Grid item xs={12} sm={3}>
           <div className={styles.sidebar}>
             <Typography variant="h6" gutterBottom>
@@ -98,7 +102,7 @@ export default function BookingPage() {
           </div>
         </Grid>
 
-        {/* Booking History */}
+        {/* Booking History - ส่วนของประวัติการจอง */}
         <Grid item xs={12} sm={9}>
           <div className={styles.content}>
             <Typography variant="h5" gutterBottom>
@@ -106,6 +110,7 @@ export default function BookingPage() {
             </Typography>
             <Divider sx={{ mb: 3 }} />
 
+            {/* แสดงการโหลดหรือข้อมูลการจอง */}
             {loading ? (
               <CircularProgress />
             ) : bookings.length === 0 ? (
