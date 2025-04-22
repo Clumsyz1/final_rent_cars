@@ -15,6 +15,7 @@ import { useRouter } from "next/navigation";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { db } from "@/app/firebase/config";
 import { collection, getDocs } from "firebase/firestore";
+import MyAppBar from "@/components/Appbar";
 
 export default function AdminDashboard() {
   const [cars, setCars] = useState([]);
@@ -46,49 +47,53 @@ export default function AdminDashboard() {
   };
 
   return (
-    <Paper sx={{ p: 4, m: 3 }}>
-      <Button
-        startIcon={<ArrowBackIcon />}
-        variant="outlined"
-        onClick={() => router.push("/admin")}
-        sx={{ mb: 2 }}
-      >
-        ย้อนกลับ
-      </Button>
+    <div>
+      <MyAppBar />
 
-      <Typography variant="h4" gutterBottom>
-        📦 รายการรถทั้งหมด (Stock)
-      </Typography>
-      <Divider sx={{ mb: 3 }} />
-      <Grid container spacing={2}>
-        {cars.map((car) => {
-          const available = getAvailableStock(car.id, car.stock);
-          return (
-            <Grid item xs={12} sm={6} md={4} key={car.id}>
-              <Card>
-                <CardMedia
-                  component="img"
-                  image={car.imageUrl}
-                  alt={car.name}
-                  sx={{
-                    width: "350px", // ทำให้รูปไม่เกิน card
-                    height: "300px", // ความสูงคงที่
-                    objectFit: "fill", // ครอบตัดรูปให้พอดี
-                  }} // ครอบตัดรูปให้พอดี}}
-                />
-                <CardContent>
-                  <Typography variant="h6">{car.name}</Typography>
-                  <Typography>ประเภท: {car.type}</Typography>
-                  <Typography>ราคา/วัน: ฿{car.pricePerDay}</Typography>
-                  <Typography color={available <= 0 ? "error" : "primary"}>
-                    คงเหลือ: {available} คัน
-                  </Typography>
-                </CardContent>
-              </Card>
-            </Grid>
-          );
-        })}
-      </Grid>
-    </Paper>
+      <Paper sx={{ p: 4, m: 3 }}>
+        <Button
+          startIcon={<ArrowBackIcon />}
+          variant="outlined"
+          onClick={() => router.push("/admin")}
+          sx={{ mb: 2 }}
+        >
+          ย้อนกลับ
+        </Button>
+
+        <Typography variant="h4" gutterBottom>
+          📦 รายการรถทั้งหมด (Stock)
+        </Typography>
+        <Divider sx={{ mb: 3 }} />
+        <Grid container spacing={2}>
+          {cars.map((car) => {
+            const available = getAvailableStock(car.id, car.stock);
+            return (
+              <Grid item xs={12} sm={6} md={4} key={car.id}>
+                <Card>
+                  <CardMedia
+                    component="img"
+                    image={car.imageUrl}
+                    alt={car.name}
+                    sx={{
+                      width: "350px", // ทำให้รูปไม่เกิน card
+                      height: "300px", // ความสูงคงที่
+                      objectFit: "fill", // ครอบตัดรูปให้พอดี
+                    }} // ครอบตัดรูปให้พอดี}}
+                  />
+                  <CardContent>
+                    <Typography variant="h6">{car.name}</Typography>
+                    <Typography>ประเภท: {car.type}</Typography>
+                    <Typography>ราคา/วัน: ฿{car.pricePerDay}</Typography>
+                    <Typography color={available <= 0 ? "error" : "primary"}>
+                      คงเหลือ: {available} คัน
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </Grid>
+            );
+          })}
+        </Grid>
+      </Paper>
+    </div>
   );
 }

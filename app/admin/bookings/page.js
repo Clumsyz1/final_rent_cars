@@ -16,6 +16,7 @@ import {
 import { db } from "@/app/firebase/config";
 import { collection, getDocs, doc, getDoc } from "firebase/firestore";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import MyAppBar from "@/components/Appbar";
 
 export default function AdminBookings() {
   const [bookings, setBookings] = useState([]);
@@ -51,63 +52,67 @@ export default function AdminBookings() {
   }, []);
 
   return (
-    <Paper sx={{ p: 4, m: 3 }}>
-      <Button
-        startIcon={<ArrowBackIcon />}
-        variant="outlined"
-        onClick={() => router.push("/admin")}
-        sx={{ mb: 2 }}
-      >
-        ย้อนกลับ
-      </Button>
-      <Typography variant="h4" gutterBottom>
-        📜 ประวัติการจองทั้งหมด
-      </Typography>
-      <Divider sx={{ mb: 3 }} />
+    <div>
+      <MyAppBar />
 
-      {loading ? (
-        <Grid container justifyContent="center">
-          <CircularProgress />
-        </Grid>
-      ) : bookings.length === 0 ? (
-        <Typography>ไม่มีข้อมูลการจอง</Typography>
-      ) : (
-        <Grid container spacing={2}>
-          {bookings.map((booking, index) => (
-            <Grid item xs={12} sm={6} md={4} key={index}>
-              <Card sx={{ height: "100%" }}>
-                {booking.car?.imageUrl && (
-                  <CardMedia
-                    component="img"
-                    image={booking.car.imageUrl}
-                    alt={booking.car.name}
-                    sx={{
-                      width: "300px", // ทำให้รูปไม่เกิน card
-                      height: "230px", // ความสูงคงที่
-                      objectFit: "fill", // ครอบตัดรูปให้พอดี
-                    }} // ครอบตัดรูปให้พอดี}}
-                  />
-                )}
-                <CardContent>
-                  <Typography variant="h6">
-                    🚗 {booking.car?.name || "ไม่พบข้อมูลรถ"}
-                  </Typography>
-                  <Typography variant="body2">
-                    📅 {booking.startDate} - {booking.endDate}
-                    <br />
-                    👤 ผู้เช่า:{" "}
-                    {booking.user
-                      ? `${booking.user.firstName} ${booking.user.lastName}`
-                      : booking.userId}
-                    <br />
-                    📞 เบอร์โทร: {booking.user?.phone || "-"}
-                  </Typography>
-                </CardContent>
-              </Card>
-            </Grid>
-          ))}
-        </Grid>
-      )}
-    </Paper>
+      <Paper sx={{ p: 4, m: 3 }}>
+        <Button
+          startIcon={<ArrowBackIcon />}
+          variant="outlined"
+          onClick={() => router.push("/admin")}
+          sx={{ mb: 2 }}
+        >
+          ย้อนกลับ
+        </Button>
+        <Typography variant="h4" gutterBottom>
+          📜 ประวัติการจองทั้งหมด
+        </Typography>
+        <Divider sx={{ mb: 3 }} />
+
+        {loading ? (
+          <Grid container justifyContent="center">
+            <CircularProgress />
+          </Grid>
+        ) : bookings.length === 0 ? (
+          <Typography>ไม่มีข้อมูลการจอง</Typography>
+        ) : (
+          <Grid container spacing={2}>
+            {bookings.map((booking, index) => (
+              <Grid item xs={12} sm={6} md={4} key={index}>
+                <Card sx={{ height: "100%" }}>
+                  {booking.car?.imageUrl && (
+                    <CardMedia
+                      component="img"
+                      image={booking.car.imageUrl}
+                      alt={booking.car.name}
+                      sx={{
+                        width: "300px", // ทำให้รูปไม่เกิน card
+                        height: "230px", // ความสูงคงที่
+                        objectFit: "fill", // ครอบตัดรูปให้พอดี
+                      }} // ครอบตัดรูปให้พอดี}}
+                    />
+                  )}
+                  <CardContent>
+                    <Typography variant="h6">
+                      🚗 {booking.car?.name || "ไม่พบข้อมูลรถ"}
+                    </Typography>
+                    <Typography variant="body2">
+                      📅 {booking.startDate} - {booking.endDate}
+                      <br />
+                      👤 ผู้เช่า:{" "}
+                      {booking.user
+                        ? `${booking.user.firstName} ${booking.user.lastName}`
+                        : booking.userId}
+                      <br />
+                      📞 เบอร์โทร: {booking.user?.phone || "-"}
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
+        )}
+      </Paper>
+    </div>
   );
 }
