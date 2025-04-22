@@ -20,7 +20,7 @@ export default function SignUp() {
       setEmail("");
       setPassword("");
       setConfirmPassword("");
-      router.push("/auth/sign-in"); // เปลี่ยนไปหน้า signin หลังสมัครสำเร็จ
+      router.push("/auth/sign-in");
     } catch (e) {
       console.error("Sign up error:", e.message);
       alert("เกิดข้อผิดพลาด: " + e.message);
@@ -39,39 +39,46 @@ export default function SignUp() {
   return (
     <div>
       <MyAppBar />
-      <h2>สมัครสมาชิก - เว็บเช่ารถ</h2>
-      <form onSubmit={handleSubmit} className={styles.form}>
-        <input
-          type="email"
-          placeholder="อีเมล"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-          className={styles.input}
-        />
-        <input
-          type="password"
-          placeholder="รหัสผ่าน"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-          className={styles.input}
-        />
-        <input
-          type="password"
-          placeholder="ยืนยันรหัสผ่าน"
-          value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
-          required
-          className={styles.input}
-        />
-        <button type="submit" className={styles.button}>
-          สมัครสมาชิก
-        </button>
-      </form>
-      <p>
-        มีบัญชีอยู่แล้ว? <a href="/auth/sign-in">เข้าสู่ระบบ</a>
-      </p>
+      <div className={styles.container}>
+        <div className={styles.card}>
+          <h2 className={styles.title}>สมัครสมาชิก</h2>
+          <form onSubmit={handleSubmit} className={styles.form}>
+            <input
+              type="email"
+              placeholder="อีเมล"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              className={styles.input}
+            />
+            <input
+              type="password"
+              placeholder="รหัสผ่าน"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              className={styles.input}
+            />
+            <input
+              type="password"
+              placeholder="ยืนยันรหัสผ่าน"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              required
+              className={styles.input}
+            />
+            <button type="submit" className={styles.button}>
+              สมัครสมาชิก
+            </button>
+          </form>
+          <p className={styles.switch}>
+            มีบัญชีอยู่แล้ว?{" "}
+            <a href="/auth/sign-in" className={styles.link}>
+              เข้าสู่ระบบ
+            </a>
+          </p>
+        </div>
+      </div>
     </div>
   );
 }

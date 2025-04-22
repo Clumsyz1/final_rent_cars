@@ -75,8 +75,8 @@ export default function AdminDashboard() {
                     image={car.imageUrl}
                     alt={car.name}
                     sx={{
-                      width: "350px", // ทำให้รูปไม่เกิน card
-                      height: "300px", // ความสูงคงที่
+                      width: "380px", // ทำให้รูปไม่เกิน card
+                      height: "290px", // ความสูงคงที่
                       objectFit: "fill", // ครอบตัดรูปให้พอดี
                     }} // ครอบตัดรูปให้พอดี}}
                   />

@@ -60,7 +60,8 @@ export default function DateRangePicker() {
           fullWidth
           onClick={handleNext}
           sx={{
-            backgroundColor: "#1E2A78",
+            background:
+              "linear-gradient(to bottom,rgb(0, 53, 128),rgb(27, 96, 193))",
             borderRadius: "30px",
             px: 5,
             py: 1.5,

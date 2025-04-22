@@ -1,0 +1,26 @@
+.container {
+  background-color: #f5f7fa;
+  min-height: 100vh;
+}
+
+.sidebar {
+  background-color: #ffffff;
+  padding: 24px;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.content {
+  background-color: #ffffff;
+  padding: 32px;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.carImage {
+  width: 180px;
+  height: 130px;
+  border-radius: 12px;
+  object-fit: cover;
+  margin-right: 16px;
+}

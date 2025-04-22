@@ -325,9 +325,9 @@ export default function ManageCars() {
                   image={car.imageUrl}
                   alt={car.name}
                   sx={{
+                    width: "250px",
                     height: "180px",
                     objectFit: "fill",
-                    width: "250px",
                   }}
                 />
                 <CardContent sx={{ flexGrow: 1 }}>

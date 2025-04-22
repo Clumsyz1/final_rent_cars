@@ -33,34 +33,36 @@ export default function SignIn() {
   return (
     <div>
       <MyAppBar />
-      <h2>เข้าสู่ระบบ - เว็บเช่ารถ</h2>
-      <form onSubmit={handleSubmit} className={styles.form}>
-        <input
-          type="email"
-          placeholder="อีเมล"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-          className={styles.input}
-        />
-        <input
-          type="password"
-          placeholder="รหัสผ่าน"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-          className={styles.input}
-        />
-        <button type="submit" className={styles.button}>
-          เข้าสู่ระบบ
-        </button>
-      </form>
-      <p>
-        ForgotPassword? <a href="/auth/forgot-password">ForgotPassword</a>
-      </p>
-      <p>
-        ยังไม่มีบัญชี? <a href="/auth/sign-up">สมัครสมาชิก</a>
-      </p>
+      <div className={styles.container}>
+        <h2 className={styles.heading}>เข้าสู่ระบบ - เว็บเช่ารถ</h2>
+        <form onSubmit={handleSubmit} className={styles.form}>
+          <input
+            type="email"
+            placeholder="อีเมล"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            className={styles.input}
+          />
+          <input
+            type="password"
+            placeholder="รหัสผ่าน"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            className={styles.input}
+          />
+          <button type="submit" className={styles.button}>
+            เข้าสู่ระบบ
+          </button>
+        </form>
+        <p className={styles.link}>
+          Forgot Password? <a href="/auth/forgot-password">Forgot Password</a>
+        </p>
+        <p className={styles.link}>
+          ยังไม่มีบัญชี? <a href="/auth/sign-up">สมัครสมาชิก</a>
+        </p>
+      </div>
     </div>
   );
 }

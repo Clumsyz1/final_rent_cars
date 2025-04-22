@@ -24,6 +24,7 @@ import { db } from "@/app/firebase/config";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 import MyAppBar from "@/components/Appbar";
+import styles from "./Rentpage.module.css";
 
 export default function RentPage() {
   const [cars, setCars] = useState([]);
@@ -94,15 +95,15 @@ export default function RentPage() {
     );
   });
 
-  if (!isClient) return null; // 👈 กัน hydration error
+  if (!isClient) return null;
 
   return (
     <div>
       <MyAppBar />
       <Grid container>
         {/* Sidebar Filters */}
-        <Grid item sx={{ width: 350 }} p={3}>
-          <Paper sx={{ p: 2 }}>
+        <Grid item className={styles.filtersContainer} p={3}>
+          <Paper className={styles.filtersPaper}>
             <Typography variant="h6">Filters</Typography>
 
             <FormControl fullWidth sx={{ my: 2 }}>
@@ -126,7 +127,7 @@ export default function RentPage() {
               min={0}
               max={5000}
               valueLabelDisplay="auto"
-              sx={{ my: 2 }}
+              className={styles.slider}
             />
 
             <Typography>Year</Typography>
@@ -136,7 +137,7 @@ export default function RentPage() {
               min={2000}
               max={2025}
               valueLabelDisplay="auto"
-              sx={{ my: 2 }}
+              className={styles.slider}
             />
 
             <Typography>Transmission</Typography>
@@ -169,17 +170,17 @@ export default function RentPage() {
 
         {/* Car List */}
         <Grid item xs p={3}>
-          <Box sx={{ maxWidth: "1200px", mx: "auto" }}>
-            <Typography variant="h4" gutterBottom>
+          <Box className={styles.carListContainer}>
+            <Typography variant="h4" className={styles.carListTitle}>
               🚗 เลือกรถที่คุณต้องการเช่า
             </Typography>
-            <Typography variant="subtitle1" gutterBottom>
+            <Typography variant="subtitle1" className={styles.carListSubtitle}>
               วันที่: {startDate} - {endDate}
             </Typography>
             <Divider sx={{ mb: 2 }} />
 
             {loading ? (
-              <Grid container justifyContent="center" mt={5}>
+              <Grid container className={styles.loading}>
                 <CircularProgress />
               </Grid>
             ) : (
@@ -189,31 +190,28 @@ export default function RentPage() {
                   const outOfStock = available <= 0;
                   return (
                     <Grid item xs={12} sm={6} lg={3} key={car.id}>
-                      <Card>
+                      <Card className={styles.carCard}>
                         <CardMedia
                           component="img"
                           image={car.imageUrl}
                           alt={car.name}
-                          sx={{
-                            width: "250px",
-                            height: "160px",
-                            objectFit: "fill",
-                          }}
+                          className={styles.carImage}
                         />
                         <CardContent>
                           <Typography variant="h6">{car.name}</Typography>
                           <Typography variant="body2" gutterBottom>
                             {car.type}
                           </Typography>
-                          <Box display="flex" gap={1} fontSize={14}>
+                          <Box className={styles.carDetails}>
                             👥 {car.seats} | ⚙ {car.transmission} | ⛽{" "}
                             {car.fuelType}
                           </Box>
-                          <Typography mt={1}>฿{car.pricePerDay}/day</Typography>
+                          <Typography className={styles.carPrice}>
+                            ฿{car.pricePerDay}/day
+                          </Typography>
                           <Typography
+                            className={styles.stockStatus}
                             color={outOfStock ? "error" : "primary"}
-                            fontWeight="bold"
-                            mt={1}
                           >
                             {outOfStock
                               ? "❌ Out of Stock"
@@ -223,7 +221,7 @@ export default function RentPage() {
                             variant="contained"
                             fullWidth
                             disabled={outOfStock}
-                            sx={{ mt: 1 }}
+                            className={styles.rentButton}
                             onClick={() =>
                               router.push(
                                 `/confirm?carId=${car.id}&start=${startDate}&end=${endDate}`

@@ -3,7 +3,6 @@
 import {
   Typography,
   Grid,
-  Paper,
   Divider,
   Button,
   CircularProgress,
@@ -24,6 +23,7 @@ import {
 import { onAuthStateChanged } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import MyAppBar from "@/components/Appbar";
+import styles from "./BookingPage.module.css";
 
 export default function BookingPage() {
   const [user, setUser] = useState(null);
@@ -65,12 +65,12 @@ export default function BookingPage() {
   };
 
   return (
-    <div>
+    <div className={styles.container}>
       <MyAppBar />
       <Grid container spacing={3} p={4}>
         {/* Sidebar */}
         <Grid item xs={12} sm={3}>
-          <Paper elevation={3} sx={{ p: 3, borderRadius: 3 }}>
+          <div className={styles.sidebar}>
             <Typography variant="h6" gutterBottom>
               บัญชีของฉัน
             </Typography>
@@ -95,12 +95,12 @@ export default function BookingPage() {
             >
               ⬅ ย้อนกลับ
             </Button>
-          </Paper>
+          </div>
         </Grid>
 
         {/* Booking History */}
         <Grid item xs={12} sm={9}>
-          <Paper elevation={3} sx={{ p: 4, borderRadius: 3 }}>
+          <div className={styles.content}>
             <Typography variant="h5" gutterBottom>
               ประวัติการจอง
             </Typography>
@@ -118,16 +118,9 @@ export default function BookingPage() {
                       <img
                         src={booking.car.imageUrl}
                         alt={booking.car.name}
-                        style={{
-                          width: "180px",
-                          height: "130px",
-                          borderRadius: 8,
-                          objectFit: "fill",
-                          marginRight: "16px",
-                        }}
+                        className={styles.carImage}
                       />
                     )}
-
                     <ListItemText
                       primary={`🚗 ${booking.car?.name || "ไม่พบข้อมูลรถ"}`}
                       secondary={
@@ -151,7 +144,7 @@ export default function BookingPage() {
                 ))}
               </List>
             )}
-          </Paper>
+          </div>
         </Grid>
       </Grid>
     </div>

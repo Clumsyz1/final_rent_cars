@@ -17,6 +17,7 @@ import { doc, getDoc, setDoc } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import MyAppBar from "@/components/Appbar";
+import styles from "./ProfilePage.module.css";
 
 export default function ProfilePage() {
   const [user, setUser] = useState(null);
@@ -79,12 +80,12 @@ export default function ProfilePage() {
   };
 
   return (
-    <div>
+    <div className={styles.container}>
       <MyAppBar />
       <Grid container spacing={3} p={4}>
         {/* Sidebar */}
         <Grid item xs={12} sm={3}>
-          <Paper elevation={3} sx={{ p: 3, borderRadius: 3 }}>
+          <Paper elevation={3} className={styles.sidebar}>
             <Typography variant="h6" gutterBottom>
               บัญชีของฉัน
             </Typography>
@@ -113,7 +114,7 @@ export default function ProfilePage() {
 
         {/* Profile Form */}
         <Grid item xs={12} sm={9}>
-          <Paper elevation={3} sx={{ p: 4, borderRadius: 3 }}>
+          <Paper elevation={3} className={styles.content}>
             <Typography variant="h5" gutterBottom>
               ข้อมูลโปรไฟล์
             </Typography>

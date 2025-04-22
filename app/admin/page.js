@@ -5,52 +5,9 @@ import { auth, db } from "@/app/firebase/config";
 import { onAuthStateChanged } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
 import { useRouter } from "next/navigation";
-import {
-  Button,
-  Paper,
-  Typography,
-  Divider,
-  styled,
-  Container,
-} from "@mui/material";
+import { Button, Paper, Typography, Divider, Container } from "@mui/material";
 import MyAppBar from "@/components/Appbar";
-
-const StyledContainer = styled(Container)(({ theme }) => ({
-  marginTop: theme.spacing(8),
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "center",
-}));
-
-const StyledPaper = styled(Paper)(({ theme }) => ({
-  padding: theme.spacing(4),
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "center",
-  gap: theme.spacing(2),
-  borderRadius: theme.shape.borderRadius,
-  boxShadow: theme.shadows[2],
-  maxWidth: 400,
-  width: "100%",
-}));
-
-const StyledTitle = styled(Typography)(({ theme }) => ({
-  marginBottom: theme.spacing(3),
-  color: theme.palette.primary.main,
-  fontWeight: 600,
-}));
-
-const StyledDivider = styled(Divider)(({ theme }) => ({
-  width: "80%",
-  marginBottom: theme.spacing(3),
-}));
-
-const StyledButton = styled(Button)(({ theme }) => ({
-  width: "100%",
-  padding: theme.spacing(2),
-  borderRadius: theme.shape.borderRadius,
-  fontWeight: 500,
-}));
+import styles from "./AdminPage.module.css";
 
 export default function AdminPage() {
   const [user, setUser] = useState(null);
@@ -85,40 +42,43 @@ export default function AdminPage() {
   return (
     <div>
       <MyAppBar />
-      <StyledContainer>
-        <StyledPaper>
-          <StyledTitle variant="h4" align="center">
+      <Container className={styles.container}>
+        <Paper className={styles.paper}>
+          <Typography variant="h4" className={styles.title}>
             👑 แผงควบคุมผู้ดูแลระบบ
-          </StyledTitle>
-          <StyledDivider />
-          <StyledButton
+          </Typography>
+          <Divider className={styles.divider} />
+          <Button
             variant="contained"
+            className={styles.button}
             onClick={() => router.push("/admin/dashboard")}
           >
             <Typography variant="subtitle1" fontWeight={500}>
               📦 จัดการสต็อกรถ
             </Typography>
-          </StyledButton>
-          <StyledButton
+          </Button>
+          <Button
             variant="contained"
-            onClick={() => router.push("/admin/bookings")}
             color="primary"
+            className={styles.button}
+            onClick={() => router.push("/admin/bookings")}
           >
             <Typography variant="subtitle1" fontWeight={500}>
               📜 ดูประวัติการเช่า
             </Typography>
-          </StyledButton>
-          <StyledButton
+          </Button>
+          <Button
             variant="contained"
-            onClick={() => router.push("/admin/managecars")}
             color="primary"
+            className={styles.button}
+            onClick={() => router.push("/admin/managecars")}
           >
             <Typography variant="subtitle1" fontWeight={500}>
               ➕➖ จัดการรายการรถ
             </Typography>
-          </StyledButton>
-        </StyledPaper>
-      </StyledContainer>
+          </Button>
+        </Paper>
+      </Container>
     </div>
   );
 }
