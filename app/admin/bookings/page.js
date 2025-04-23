@@ -100,20 +100,17 @@ export default function AdminBookings() {
                     )}
                     <CardContent>
                       <Typography variant="h6">
-                        🚗 {booking.car?.name || "ไม่พบข้อมูลรถ"} // แสดงชื่อรถ
+                        🚗 {booking.car?.name || "ไม่พบข้อมูลรถ"}
                       </Typography>
                       <Typography variant="body2">
-                        📅 {booking.startDate} - {booking.endDate} //
-                        แสดงช่วงเวลาการจอง
+                        📅 {booking.startDate} - {booking.endDate}
                         <br />
                         👤 ผู้เช่า:{" "}
                         {booking.user
                           ? `${booking.user.firstName} ${booking.user.lastName}`
                           : booking.userId}{" "}
-                        // แสดงชื่อผู้เช่า
                         <br />
-                        📞 เบอร์โทร: {booking.user?.phone || "-"} //
-                        แสดงเบอร์โทรของผู้เช่า
+                        📞 เบอร์โทร: {booking.user?.phone || "-"}
                       </Typography>
                     </CardContent>
                   </Card>

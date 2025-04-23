@@ -24,7 +24,7 @@ export default function MyAppBar() {
       position="static"
       sx={{
         background:
-          "linear-gradient(to right,rgb(27, 96, 193),rgb(0, 53, 128))", // สีพื้นหลังแบบไล่สี
+          "linear-gradient(to right,#1b60c1,#003580)", // สีพื้นหลังแบบไล่สี
         boxShadow: "none", // ไม่มีเงา
       }}
     >

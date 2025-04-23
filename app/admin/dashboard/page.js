@@ -83,16 +83,12 @@ export default function AdminDashboard() {
                     }}
                   />
                   <CardContent>
-                    <Typography variant="h6">{car.name}</Typography> //
-                    แสดงชื่อรถ
-                    <Typography>ประเภท: {car.type}</Typography> //
-                    แสดงประเภทของรถ
-                    <Typography>ราคา/วัน: ฿{car.pricePerDay}</Typography> //
-                    แสดงราคาเช่าต่อวัน
+                    <Typography variant="h6">{car.name}</Typography>
+                    <Typography>ประเภท: {car.type}</Typography>
+                    <Typography>ราคา/วัน: ฿{car.pricePerDay}</Typography>
                     <Typography color={available <= 0 ? "error" : "primary"}>
                       {" "}
-                      // ถ้าคงเหลือ 0 จะเป็นสีแดง คงเหลือ: {available} คัน //
-                      แสดงจำนวนรถที่เหลือ
+                      คงเหลือ: {available} คัน
                     </Typography>
                   </CardContent>
                 </Card>

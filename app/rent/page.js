@@ -221,7 +221,7 @@ export default function RentPage() {
                           </Typography>
                           <Box className={styles.carDetails}>
                             👥 {car.seats} | ⚙ {car.transmission} | ⛽{" "}
-                            {car.fuelType}
+                            {car.fuelType} | {car.year}
                           </Box>
                           <Typography className={styles.carPrice}>
                             ฿{car.pricePerDay}/day

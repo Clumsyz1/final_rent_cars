@@ -27,6 +27,7 @@ export default function ProfilePage() {
     lastName: "",
     date: "",
     gender: "Male",
+    role: "user",
     phone: "",
   });
 
@@ -79,6 +80,7 @@ export default function ProfilePage() {
       lastName: form.lastName,
       date: form.date,
       gender: form.gender,
+      role: form.role,
       phone: form.phone,
       email: user.email,
     });

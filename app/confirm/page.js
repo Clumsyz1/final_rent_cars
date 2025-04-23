@@ -128,7 +128,7 @@ export default function ConfirmPage() {
                   alt={car.name}
                   style={{
                     width: "450px",
-                    height: "250px",
+                    height: "290px",
                     borderRadius: 8,
                     marginTop: 10,
                   }}
