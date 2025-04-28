@@ -109,12 +109,12 @@ export default function ManageCars() {
   const handleEditCar = (car) => {
     setForm({
       name: car.name || "",
-      type: car.type || "SUV",
+      type: car.type || "",
       pricePerDay: car.pricePerDay || "",
       stock: car.stock || "",
       imageUrl: car.imageUrl || "",
-      fuelType: car.fuelType || "Gasoline",
-      transmission: car.transmission || "manual",
+      fuelType: car.fuelType || "",
+      transmission: car.transmission || "",
       seats: car.seats || "",
       year: car.year || "",
     });

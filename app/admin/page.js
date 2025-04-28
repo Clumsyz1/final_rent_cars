@@ -19,7 +19,7 @@ export default function AdminPage() {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       // ถ้าผู้ใช้ไม่ได้ล็อกอิน จะเปลี่ยนเส้นทางไปที่หน้าล็อกอิน
       if (!currentUser) {
-        router.push("/sign-in");
+        router.push("/auth/sign-in");
         return;
       }
 

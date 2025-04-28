@@ -28,7 +28,6 @@ import styles from "./BookingPage.module.css";
 
 export default function BookingPage() {
   // กำหนด state สำหรับข้อมูลผู้ใช้, การจอง, และสถานะการโหลด
-  const [user, setUser] = useState(null);
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
@@ -37,9 +36,8 @@ export default function BookingPage() {
     // เช็คสถานะการล็อกอินของผู้ใช้
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       if (!currentUser) {
-        router.push("/sign-in"); // ถ้าไม่ได้ล็อกอินจะไปที่หน้า Sign In
+        router.push("/auth/sign-in"); // ถ้าไม่ได้ล็อกอินจะไปที่หน้า Sign In
       } else {
-        setUser(currentUser);
         await fetchBookings(currentUser.uid); // ดึงข้อมูลการจองของผู้ใช้
       }
     });

@@ -79,7 +79,6 @@ export default function SignUp() {
           <p className={styles.switch}>
             มีบัญชีอยู่แล้ว?{" "}
             <a href="/auth/sign-in" className={styles.link}>
-              {" "}
               {/* ลิงก์ไปยังหน้าเข้าสู่ระบบ */}
               เข้าสู่ระบบ
             </a>

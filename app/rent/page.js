@@ -49,12 +49,6 @@ export default function RentPage() {
       setStartDate(params.get("start"));
       setEndDate(params.get("end"));
       setIsClient(true); // เปลี่ยนเป็น true เมื่อ client โหลดเสร็จ
-
-      // จัดการกับ DOM หรือ style
-      const someElement = document.getElementById("someElement");
-      if (someElement) {
-        someElement.style.color = "blue"; // เปลี่ยนสีของ element
-      }
     }
   }, []);
 
@@ -206,7 +200,7 @@ export default function RentPage() {
                   const available = getAvailableStock(car.id, car.stock);
                   const outOfStock = available <= 0;
                   return (
-                    <Grid item xs={12} sm={6} lg={3} key={car.id}>
+                    <Grid item xs={12} sm={6} md={4} lg={3} key={car.id}>
                       <Card className={styles.carCard}>
                         <CardMedia
                           component="img"

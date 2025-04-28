@@ -37,7 +37,7 @@ export default function ProfilePage() {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       // ตรวจสอบสถานะการล็อกอิน
       if (!currentUser) {
-        router.push("/sign-in"); // ถ้าไม่มีผู้ใช้ล็อกอิน ให้ไปหน้าเข้าสู่ระบบ
+        router.push("/auth/sign-in"); // ถ้าไม่มีผู้ใช้ล็อกอิน ให้ไปหน้าเข้าสู่ระบบ
       } else {
         setUser(currentUser);
         const docRef = doc(db, "users", currentUser.uid); // สร้างอ้างอิงไปยังเอกสารผู้ใช้ใน Firestore
