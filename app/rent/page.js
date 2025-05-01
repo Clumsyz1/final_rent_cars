@@ -94,8 +94,6 @@ export default function RentPage() {
     );
   });
 
-  if (!isClient) return null;
-
   return (
     <div>
       <MyAppBar />

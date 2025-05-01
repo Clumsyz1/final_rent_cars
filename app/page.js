@@ -7,13 +7,6 @@ import { useEffect, useState } from "react";
 import styles from "./page.module.css";
 
 export default function Page() {
-  const [loaded, setLoaded] = useState(false);
-
-  useEffect(() => {
-    const timer = setTimeout(() => setLoaded(true), 300);
-    return () => clearTimeout(timer);
-  }, []);
-
   return (
     <Box className={styles.pageContainer}>
       <MyAppBar />

@@ -45,13 +45,7 @@ export default function ConfirmPage() {
     });
 
     const fetchCar = async () => {
-      if (
-        !carId ||
-        !startDate ||
-        !endDate ||
-        startDate === "null" ||
-        endDate === "null"
-      ) {
+      if (!carId || !startDate || !endDate) {
         alert("ข้อมูลไม่ครบ กรุณาเลือกวันที่ใหม่");
         router.push("/");
         return;
