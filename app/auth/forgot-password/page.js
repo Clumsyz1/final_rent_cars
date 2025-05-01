@@ -13,20 +13,20 @@ import {
 import { sendPasswordResetEmail } from "firebase/auth";
 import { auth } from "@/app/firebase/config";
 import MyAppBar from "@/components/Appbar";
-import styles from "./ForgotPasswordPage.module.css"; // นำเข้าคลาสจาก CSS Module
+import styles from "./ForgotPasswordPage.module.css";
 
 export default function ForgotPasswordPage() {
-  const [email, setEmail] = useState(""); // สถานะสำหรับอีเมล
+  const [email, setEmail] = useState("");
   const [alert, setAlert] = useState({ message: "", severity: "success" });
 
   const handleSubmit = async (e) => {
-    e.preventDefault(); // ป้องกันการรีเฟรชหน้าเมื่อส่งฟอร์ม
+    e.preventDefault();
     try {
-      await sendPasswordResetEmail(auth, email); // ส่งอีเมลรีเซ็ตรหัสผ่าน
-      setAlert("ส่งอีเมลรีเซ็ตรหัสผ่านแล้ว กรุณาตรวจสอบกล่องข้อความของคุณ"); // แจ้งข้อความสำเร็จ
-      setEmail(""); // เคลียร์อีเมลหลังจากส่งสำเร็จ
+      await sendPasswordResetEmail(auth, email);
+      setAlert("ส่งอีเมลรีเซ็ตรหัสผ่านแล้ว กรุณาตรวจสอบกล่องข้อความของคุณ");
+      setEmail("");
     } catch (err) {
-      setAlert("เกิดข้อผิดพลาด: " + err.message); // แสดงข้อความข้อผิดพลาด
+      setAlert("เกิดข้อผิดพลาด: " + err.message);
     }
   };
 
@@ -34,9 +34,8 @@ export default function ForgotPasswordPage() {
 
   return (
     <div>
-      <MyAppBar /> {/* แสดงแถบเมนูด้านบน */}
+      <MyAppBar />
       <Box className={styles.container}>
-        {/* ใช้คลาสจาก CSS Module */}
         <Paper className={styles.paper}>
           <Typography variant="h5" className={styles.title}>
             ลืมรหัสผ่าน
@@ -70,7 +69,6 @@ export default function ForgotPasswordPage() {
             </a>
           </Typography>
         </Paper>
-        {/* Snackbar สำหรับแจ้งเตือน */}
         <Snackbar
           open={!!alert.message}
           autoHideDuration={6000}

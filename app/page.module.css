@@ -1,93 +1,73 @@
-/* Page.module.css */
-
-/* คอนเทนเนอร์หลักของหน้า */
 .pageContainer {
-  background-color: #f9f9f9; /* สีพื้นหลังแบบเทาอ่อน */
-  min-height: 100vh; /* ความสูงอย่างน้อยเต็มหน้าจอ */
+  background-color: #f9f9f9;
+  min-height: 100vh;
   display: flex;
-  flex-direction: column; /* วางเนื้อหาในแนวตั้ง */
+  flex-direction: column;
 }
-/* ตัวอักษรวิ่งๆ */
+
 .WingWing {
   color: #f5f5f5;
   background: linear-gradient(90deg, #003580 50%, #1b60c1 100%);
   font-size: 20px;
 }
 
-/* คอนเทนเนอร์สำหรับ Hero Section */
 .heroContainer {
-  background: linear-gradient(
-    to bottom right,
-    #ffffff,
-    #f5f5f5
-  ); /* การไล่สีจากขาวไปเทาอ่อน */
-  padding: 48px 0; /* การจัดระยะห่างด้านบนและล่าง */
-  border-radius: 16px; /* มุมโค้งมน */
-  max-width: 1100px; /* กำหนดความกว้างสูงสุด */
-  margin: 0 auto; /* จัดให้อยู่กลาง */
-  padding-left: 24px; /* ระยะห่างด้านซ้าย */
-  padding-right: 24px; /* ระยะห่างด้านขวา */
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05); /* เงาบางๆ */
+  background: linear-gradient(to bottom right, #ffffff, #f5f5f5);
+  padding: 48px 0;
+  border-radius: 16px;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding-left: 24px;
+  padding-right: 24px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
 }
 
-/* ชื่อของบริการ (ใหญ่ที่สุด) */
 .title {
-  text-align: center; /* จัดกลาง */
-  font-weight: 700; /* ตัวหนา */
-  color: #003580; /* น้ำเงินเข้ม */
-  font-size: 2.75rem; /* ขนาดตัวอักษรใหญ่ */
+  text-align: center;
+  font-weight: 700;
+  color: #003580;
+  font-size: 2.75rem;
 }
 
-/* คำอธิบายใต้ชื่อบริการ */
 .subtitle {
-  text-align: center; /* จัดกลาง */
-  margin-top: 16px; /* ระยะห่างด้านบน */
-  color: #777777; /* เทาอ่อน */
-  font-size: 1.15rem; /* ขนาดตัวอักษร */
+  text-align: center;
+  margin-top: 16px;
+  color: #777777;
+  font-size: 1.15rem;
 }
 
-/* คอนเทนเนอร์สำหรับฟีเจอร์ */
 .featuresContainer {
-  margin-top: 48px; /* ระยะห่างจากส่วนที่แล้ว */
+  margin-top: 48px;
 }
 
-/* กระดาษที่ใช้สำหรับแสดงฟีเจอร์ */
 .featuresPaper {
-  padding: 32px; /* ระยะห่างรอบๆ */
-  border-radius: 16px; /* มุมโค้งมน */
-  background: linear-gradient(
-    to bottom,
-    #ffffff,
-    #f1f1f1
-  ); /* ไล่สีจากขาวไปเทาอ่อน */
-  text-align: center; /* จัดกลาง */
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); /* เงาเบาๆ */
+  padding: 32px;
+  border-radius: 16px;
+  background: linear-gradient(to bottom, #ffffff, #f1f1f1);
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
-/* ชื่อฟีเจอร์ */
 .featuresTitle {
-  font-weight: 700; /* ตัวหนา */
-  color: #003580; /* น้ำเงินเข้ม */
-  margin-bottom: 24px; /* ระยะห่างด้านล่าง */
-  font-size: 1.5rem; /* ขนาดตัวอักษร */
+  font-weight: 700;
+  color: #003580;
+  margin-bottom: 24px;
+  font-size: 1.5rem;
 }
 
-/* รายการฟีเจอร์ */
 .featureItem {
-  color: #444444; /* เทาเข้ม */
-  font-size: 1rem; /* ขนาดตัวอักษร */
+  color: #444444;
+  font-size: 1rem;
 }
 
-/* ส่วนท้ายของหน้า */
 .footer {
-  background-color: #003580; /* น้ำเงินเข้ม */
-  padding: 16px 0; /* ระยะห่างด้านบนและล่าง */
+  background-color: #003580;
+  padding: 16px 0;
 }
 
-/* ข้อความในส่วนท้าย */
 .footerText {
-  color: white; /* สีขาว */
-  text-align: center; /* จัดกลาง */
-  opacity: 0.85; /* ความโปร่งใส */
-  font-size: 0.875rem; /* ขนาดตัวอักษร */
+  color: white;
+  text-align: center;
+  opacity: 0.85;
+  font-size: 0.875rem;
 }

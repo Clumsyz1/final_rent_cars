@@ -1,89 +1,74 @@
-/* Container สำหรับจัดการ layout ให้อยู่ตรงกลางของหน้าจอ */
 .container {
-  min-height: 100vh; /* ให้ความสูงของ container ครอบคลุมทั้งหน้าจอ */
-  display: flex; /* ใช้ flexbox ในการจัดวาง */
-  align-items: center; /* จัดแนวแนวตั้งให้อยู่ตรงกลาง */
-  justify-content: center; /* จัดแนวนอนให้อยู่ตรงกลาง */
-  background: linear-gradient(
-    to right,
-    #e0f7fa,
-    #fff
-  ); /* สีพื้นหลังเป็น gradient */
-  padding: 20px; /* เพิ่มระยะห่างจากขอบ */
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(to right, #e0f7fa, #fff);
+  padding: 20px;
 }
 
-/* การออกแบบการ์ดสำหรับฟอร์ม */
 .card {
-  background-color: white; /* สีพื้นหลังของการ์ด */
-  padding: 32px; /* ระยะห่างภายในการ์ด */
-  border-radius: 16px; /* มุมของการ์ดจะโค้ง */
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* เงาใต้การ์ด */
-  max-width: 400px; /* กำหนดความกว้างสูงสุดของการ์ด */
-  width: 100%; /* ให้ความกว้างของการ์ดเต็มที่ */
-  text-align: center; /* จัดข้อความให้อยู่กลาง */
+  background-color: white;
+  padding: 32px;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  width: 100%;
+  text-align: center;
 }
 
-/* ชื่อเรื่องของฟอร์ม */
 .title {
-  font-size: 24px; /* ขนาดตัวอักษร */
-  margin-bottom: 20px; /* ระยะห่างด้านล่าง */
-  font-weight: bold; /* ทำให้ตัวอักษรหนา */
-  color: #333; /* สีตัวอักษร */
+  font-size: 24px;
+  margin-bottom: 20px;
+  font-weight: bold;
+  color: #333;
 }
 
-/* การจัดรูปแบบของฟอร์ม */
 .form {
-  display: flex; /* ใช้ flexbox */
-  flex-direction: column; /* จัดให้องค์ประกอบในฟอร์มแสดงในแนวตั้ง */
-  gap: 16px; /* ระยะห่างระหว่างแต่ละฟอร์ม */
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
-/* การออกแบบของช่องกรอกข้อมูล */
 .input {
-  padding: 12px; /* ระยะห่างภายในช่องกรอกข้อมูล */
-  border: 1px solid #ccc; /* กรอบช่องกรอกข้อมูล */
-  border-radius: 8px; /* มุมโค้งของกรอบ */
-  font-size: 16px; /* ขนาดตัวอักษรภายในช่องกรอก */
-  transition: border-color 0.2s; /* การเปลี่ยนแปลงของสีกรอบเมื่อโฟกัส */
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 16px;
+  transition: border-color 0.2s;
 }
 
-/* การออกแบบช่องกรอกข้อมูลเมื่อได้รับการโฟกัส */
 .input:focus {
-  border-color: #28a745; /* เปลี่ยนสีกรอบเมื่อโฟกัส */
-  outline: none; /* ลบเส้นขอบเมื่อช่องกรอกได้รับโฟกัส */
+  border-color: #28a745;
+  outline: none;
 }
 
-/* การออกแบบปุ่ม */
 .button {
-  padding: 12px; /* ระยะห่างภายในปุ่ม */
-  background-color: #28a745; /* สีพื้นหลังของปุ่ม */
-  color: white; /* สีตัวอักษรของปุ่ม */
-  font-weight: bold; /* ทำให้ตัวอักษรหนา */
-  border: none; /* ลบเส้นขอบ */
-  border-radius: 8px; /* มุมโค้งของปุ่ม */
-  cursor: pointer; /* เปลี่ยน cursor เป็น pointer เมื่อวางเมาส์บนปุ่ม */
-  transition: background-color 0.2s; /* การเปลี่ยนสีพื้นหลังเมื่อ hover */
+  padding: 12px;
+  background-color: #28a745;
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s;
 }
 
-/* การออกแบบเมื่อวางเมาส์บนปุ่ม */
 .button:hover {
-  background-color: #218838; /* เปลี่ยนสีพื้นหลังเมื่อ hover */
+  background-color: #218838;
 }
 
-/* การออกแบบข้อความเปลี่ยนไปยังหน้าล็อกอิน */
 .switch {
-  margin-top: 16px; /* ระยะห่างด้านบน */
-  font-size: 14px; /* ขนาดตัวอักษร */
-  color: #555; /* สีตัวอักษร */
+  margin-top: 16px;
+  font-size: 14px;
+  color: #555;
 }
 
-/* ลิงก์ */
 .link {
-  color: #0070f3; /* สีของลิงก์ */
-  text-decoration: none; /* ลบเส้นใต้ */
+  color: #0070f3;
+  text-decoration: none;
 }
 
-/* การออกแบบเมื่อวางเมาส์บนลิงก์ */
 .link:hover {
-  text-decoration: underline; /* เพิ่มเส้นใต้เมื่อ hover */
+  text-decoration: underline;
 }

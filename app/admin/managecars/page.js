@@ -33,11 +33,10 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import MyAppBar from "@/components/Appbar";
 
 export default function ManageCars() {
-  const [cars, setCars] = useState([]); // เก็บข้อมูลรถทั้งหมดจากฐานข้อมูล
-  const [editId, setEditId] = useState(null); // เก็บ ID ของรถที่กำลังแก้ไข
+  const [cars, setCars] = useState([]);
+  const [editId, setEditId] = useState(null);
   const router = useRouter();
 
-  // ฟอร์มข้อมูลรถที่กรอก
   const [form, setForm] = useState({
     name: "",
     type: "SUV",
@@ -50,12 +49,10 @@ export default function ManageCars() {
     year: "",
   });
 
-  // เรียกใช้ฟังก์ชัน fetchCars เมื่อคอมโพเนนต์โหลด
   useEffect(() => {
     fetchCars();
   }, []);
 
-  // ฟังก์ชันดึงข้อมูลรถจาก Firebase
   const fetchCars = async () => {
     const snapshot = await getDocs(collection(db, "cars"));
     const carList = snapshot.docs.map((doc) => ({
@@ -65,7 +62,6 @@ export default function ManageCars() {
     setCars(carList);
   };
 
-  // ฟังก์ชันเพิ่มหรืออัปเดตรถ
   const handleAddOrUpdateCar = async () => {
     const carData = {
       ...form,
@@ -76,14 +72,11 @@ export default function ManageCars() {
     };
 
     if (editId) {
-      // หากมี editId จะทำการอัปเดตข้อมูลรถที่มีอยู่
       await updateDoc(doc(db, "cars", editId), carData);
     } else {
-      // หากไม่มี editId จะทำการเพิ่มรถใหม่
       await addDoc(collection(db, "cars"), carData);
     }
 
-    // รีเซ็ตฟอร์มหลังจากบันทึกข้อมูล
     setForm({
       name: "",
       type: "SUV",
@@ -95,17 +88,15 @@ export default function ManageCars() {
       seats: "",
       year: "",
     });
-    setEditId(null); // รีเซ็ต editId
-    fetchCars(); // ดึงข้อมูลรถใหม่หลังจากเพิ่มหรือแก้ไข
+    setEditId(null);
+    fetchCars();
   };
 
-  // ฟังก์ชันลบรถ
   const handleDeleteCar = async (id) => {
     await deleteDoc(doc(db, "cars", id));
-    fetchCars(); // รีเฟรชข้อมูลรถ
+    fetchCars();
   };
 
-  // ฟังก์ชันแก้ไขรถ
   const handleEditCar = (car) => {
     setForm({
       name: car.name || "",
@@ -118,16 +109,14 @@ export default function ManageCars() {
       seats: car.seats || "",
       year: car.year || "",
     });
-    setEditId(car.id); // กำหนด editId เป็น ID ของรถที่กำลังจะแก้ไข
-    window.scrollTo({ top: 0, behavior: "smooth" }); // เลื่อนหน้าไปด้านบน
+    setEditId(car.id);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  // ฟังก์ชันจัดการการเปลี่ยนแปลงข้อมูลในฟอร์ม
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  // ตัวเลือกสำหรับประเภทต่างๆ
   const BodyType = [
     { value: "SUV", label: "SUV" },
     { value: "Sedan", label: "Sedan" },
@@ -150,7 +139,6 @@ export default function ManageCars() {
     <div>
       <MyAppBar />
       <Paper sx={{ p: 4, m: 3 }}>
-        {/* ปุ่มย้อนกลับ */}
         <Button
           startIcon={<ArrowBackIcon />}
           variant="outlined"
@@ -160,16 +148,13 @@ export default function ManageCars() {
           ย้อนกลับ
         </Button>
 
-        {/* หัวข้อ */}
         <Typography variant="h4" gutterBottom>
           {editId ? "✏️ แก้ไขรถ" : "➕➖ จัดการรถ"}
         </Typography>
 
         <Divider sx={{ mb: 4 }} />
 
-        {/* ฟอร์มกรอกข้อมูลรถ */}
         <Grid container spacing={2} mb={4}>
-          {/* ชื่อรถ */}
           <Grid item xs={12} sm={6}>
             <TextField
               label="ชื่อรถ"
@@ -180,7 +165,6 @@ export default function ManageCars() {
               required
             />
           </Grid>
-          {/* ประเภทรถ */}
           <Grid item xs={12} sm={6}>
             <TextField
               select
@@ -198,7 +182,6 @@ export default function ManageCars() {
               ))}
             </TextField>
           </Grid>
-          {/* ราคา/วัน */}
           <Grid item xs={6} sm={3}>
             <TextField
               label="ราคา/วัน"
@@ -210,7 +193,6 @@ export default function ManageCars() {
               required
             />
           </Grid>
-          {/* จำนวนคัน */}
           <Grid item xs={6} sm={3}>
             <TextField
               label="จำนวนคัน"
@@ -222,7 +204,6 @@ export default function ManageCars() {
               required
             />
           </Grid>
-          {/* ที่นั่ง */}
           <Grid item xs={6} sm={3}>
             <TextField
               label="ที่นั่ง"
@@ -234,7 +215,6 @@ export default function ManageCars() {
               required
             />
           </Grid>
-          {/* ปี */}
           <Grid item xs={6} sm={3}>
             <TextField
               label="ปี"
@@ -246,7 +226,6 @@ export default function ManageCars() {
               required
             />
           </Grid>
-          {/* ระบบเกียร์ */}
           <Grid item xs={12} sm={6}>
             <TextField
               select
@@ -264,7 +243,6 @@ export default function ManageCars() {
               ))}
             </TextField>
           </Grid>
-          {/* เชื้อเพลิง */}
           <Grid item xs={12} sm={6}>
             <TextField
               select
@@ -282,7 +260,6 @@ export default function ManageCars() {
               ))}
             </TextField>
           </Grid>
-          {/* URL รูปภาพ */}
           <Grid item xs={12}>
             <TextField
               label="URL รูปภาพ"
@@ -293,7 +270,6 @@ export default function ManageCars() {
               required
             />
           </Grid>
-          {/* ปุ่มเพิ่มหรือแก้ไข */}
           <Grid item xs={12}>
             <Stack direction="row" spacing={2}>
               <Button
@@ -334,7 +310,6 @@ export default function ManageCars() {
           รายการรถทั้งหมด
         </Typography>
 
-        {/* แสดงรายการรถ */}
         <Grid container spacing={3}>
           {cars.map((car) => (
             <Grid item xs={12} sm={6} md={4} key={car.id}>
@@ -378,8 +353,6 @@ export default function ManageCars() {
                   <Typography variant="body2" color="text.secondary">
                     จำนวนคัน: {car.stock}
                   </Typography>
-
-                  {/* ปุ่มแก้ไขและลบ */}
                   <Box display="flex" justifyContent="flex-end" gap={1} mt={2}>
                     <Tooltip title="แก้ไข">
                       <IconButton

@@ -13,18 +13,17 @@ import {
 } from "@mui/material";
 import { useRouter } from "next/navigation";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import { db } from "@/app/firebase/config"; // เชื่อมต่อกับ Firebase
-import { collection, getDocs } from "firebase/firestore"; // ฟังก์ชันที่ใช้ดึงข้อมูลจาก Firestore
-import MyAppBar from "@/components/Appbar"; // ใช้ AppBar ที่กำหนดเอง
+import { db } from "@/app/firebase/config";
+import { collection, getDocs } from "firebase/firestore";
+import MyAppBar from "@/components/Appbar";
 
 export default function AdminDashboard() {
-  const [cars, setCars] = useState([]); // สถานะของข้อมูลรถ
-  const [bookings, setBookings] = useState([]); // สถานะของข้อมูลการจอง
+  const [cars, setCars] = useState([]);
+  const [bookings, setBookings] = useState([]);
   const router = useRouter();
 
   useEffect(() => {
     const fetchData = async () => {
-      // ดึงข้อมูลจากคอลเล็กชัน 'cars' และ 'bookings' จาก Firestore
       const carSnapshot = await getDocs(collection(db, "cars"));
       const bookingSnapshot = await getDocs(collection(db, "bookings"));
 
@@ -35,17 +34,16 @@ export default function AdminDashboard() {
 
       const bookingList = bookingSnapshot.docs.map((doc) => doc.data());
 
-      setCars(carList); // อัปเดตข้อมูลรถยนต์
-      setBookings(bookingList); // อัปเดตข้อมูลการจอง
+      setCars(carList);
+      setBookings(bookingList);
     };
 
-    fetchData(); // เรียกใช้งานฟังก์ชันดึงข้อมูล
+    fetchData();
   }, []);
 
   const getAvailableStock = (carId, stock) => {
-    // ฟังก์ชันคำนวณจำนวนรถที่เหลือจากการจอง
     const booked = bookings.filter((b) => b.carId === carId).length;
-    return stock - booked; // คำนวณจำนวนรถที่เหลือ
+    return stock - booked;
   };
 
   return (
@@ -56,7 +54,7 @@ export default function AdminDashboard() {
         <Button
           startIcon={<ArrowBackIcon />}
           variant="outlined"
-          onClick={() => router.push("/admin")} // ปุ่มย้อนกลับไปที่หน้าผู้ดูแลระบบ
+          onClick={() => router.push("/admin")}
           sx={{ mb: 2 }}
         >
           ย้อนกลับ
@@ -68,18 +66,18 @@ export default function AdminDashboard() {
         <Divider sx={{ mb: 3 }} />
         <Grid container spacing={2}>
           {cars.map((car) => {
-            const available = getAvailableStock(car.id, car.stock); // คำนวณจำนวนรถที่เหลือ
+            const available = getAvailableStock(car.id, car.stock);
             return (
               <Grid item xs={12} sm={6} md={4} key={car.id}>
                 <Card>
                   <CardMedia
                     component="img"
-                    image={car.imageUrl} // แสดงภาพรถ
+                    image={car.imageUrl}
                     alt={car.name}
                     sx={{
-                      width: "380px", // กำหนดความกว้างของรูป
-                      height: "290px", // กำหนดความสูงของรูป
-                      objectFit: "fill", // ครอบตัดรูปให้พอดี
+                      width: "380px",
+                      height: "290px",
+                      objectFit: "fill",
                     }}
                   />
                   <CardContent>
@@ -87,7 +85,6 @@ export default function AdminDashboard() {
                     <Typography>ประเภท: {car.type}</Typography>
                     <Typography>ราคา/วัน: ฿{car.pricePerDay}</Typography>
                     <Typography color={available <= 0 ? "error" : "primary"}>
-                      {" "}
                       คงเหลือ: {available} คัน
                     </Typography>
                   </CardContent>

@@ -26,59 +26,52 @@ import PersonIcon from "@mui/icons-material/Person";
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 
 export default function UserMenu() {
-  const [anchorEl, setAnchorEl] = useState(null); // สำหรับการเปิด/ปิดเมนู
-  const [user, setUser] = useState(null); // เก็บข้อมูลผู้ใช้ที่เข้าสู่ระบบ
-  const [role, setRole] = useState(null); // เก็บข้อมูลบทบาทของผู้ใช้ (เช่น admin หรือ user)
-  const [openConfirm, setOpenConfirm] = useState(false); // ใช้ควบคุมการแสดงกล่องยืนยันการออกจากระบบ
-  const open = Boolean(anchorEl); // เช็คว่าเมนูเปิดอยู่หรือไม่
-  const router = useRouter(); // สำหรับการนำทางไปยังหน้าอื่น
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [user, setUser] = useState(null);
+  const [role, setRole] = useState(null);
+  const [openConfirm, setOpenConfirm] = useState(false);
+  const open = Boolean(anchorEl);
+  const router = useRouter();
 
-  // ฟังก์ชันตรวจสอบสถานะการเข้าสู่ระบบของผู้ใช้
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       if (currentUser) {
-        setUser(currentUser); // หากมีผู้ใช้เข้าสู่ระบบ, เก็บข้อมูลผู้ใช้
-        const docRef = doc(db, "users", currentUser.uid); // ดึงข้อมูลบทบาทของผู้ใช้จาก Firestore
+        setUser(currentUser);
+        const docRef = doc(db, "users", currentUser.uid);
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
           const data = docSnap.data();
-          setRole(data.role || "user"); // หากพบบทบาท, กำหนดบทบาทให้กับผู้ใช้
+          setRole(data.role || "user");
         }
       } else {
-        setUser(null); // หากไม่มีผู้ใช้เข้าสู่ระบบ, รีเซ็ตข้อมูลผู้ใช้และบทบาท
+        setUser(null);
         setRole(null);
       }
     });
-    return () => unsubscribe(); // ลบการติดตามเมื่อคอมโพเนนต์ถูกยกเลิก
+    return () => unsubscribe();
   }, []);
 
-  // ฟังก์ชันเปิดเมนู
   const handleClick = (event) => setAnchorEl(event.currentTarget);
-  // ฟังก์ชันปิดเมนู
   const handleClose = () => setAnchorEl(null);
 
-  // ฟังก์ชันออกจากระบบ
   const handleLogout = async () => {
-    await signOut(auth); // ออกจากระบบ Firebase
-    setUser(null); // รีเซ็ตข้อมูลผู้ใช้
-    handleClose(); // ปิดเมนู
-    router.push("/"); // นำทางไปยังหน้าแรก
+    await signOut(auth);
+    setUser(null);
+    handleClose();
+    router.push("/");
   };
 
-  // ฟังก์ชันเปิดกล่องยืนยันการออกจากระบบ
   const handleOpenConfirm = () => {
-    handleClose(); // ปิดเมนูก่อน
-    setOpenConfirm(true); // เปิดกล่องยืนยัน
-  };
-  // ฟังก์ชันปิดกล่องยืนยันการออกจากระบบ
-  const handleCloseConfirm = () => setOpenConfirm(false);
-  // ฟังก์ชันยืนยันการออกจากระบบ
-  const handleConfirmLogout = () => {
-    setOpenConfirm(false); // ปิดกล่องยืนยัน
-    handleLogout(); // เรียกฟังก์ชันออกจากระบบ
+    handleClose();
+    setOpenConfirm(true);
   };
 
-  // หากไม่มีผู้ใช้เข้าสู่ระบบ, แสดงไอคอนสำหรับเข้าสู่ระบบ
+  const handleCloseConfirm = () => setOpenConfirm(false);
+  const handleConfirmLogout = () => {
+    setOpenConfirm(false);
+    handleLogout();
+  };
+
   if (!user) {
     return (
       <IconButton onClick={() => router.push("/auth/sign-in")} color="inherit">
@@ -89,18 +82,14 @@ export default function UserMenu() {
 
   return (
     <div>
-      {/* ไอคอนสำหรับเปิดเมนูผู้ใช้ */}
       <IconButton onClick={handleClick} color="inherit">
         <Avatar sx={{ width: 32, height: 32, bgcolor: "transparent" }} />
       </IconButton>
-      {/* เมนูผู้ใช้ */}
       <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
-        {/* แสดงอีเมลของผู้ใช้ */}
         <Typography sx={{ px: 2, py: 1, fontWeight: "bold" }}>
           {user.email}
         </Typography>
         <Divider />
-        {/* เมนูสำหรับไปที่โปรไฟล์ */}
         <MenuItem
           onClick={() => {
             router.push("/account/profile");
@@ -112,7 +101,6 @@ export default function UserMenu() {
           </ListItemIcon>
           Profile
         </MenuItem>
-        {/* เมนูสำหรับไปที่รายการการจอง */}
         <MenuItem
           onClick={() => {
             router.push("/account/bookings");
@@ -124,7 +112,6 @@ export default function UserMenu() {
           </ListItemIcon>
           Bookings
         </MenuItem>
-        {/* เมนูสำหรับผู้ดูแลระบบ */}
         {role === "admin" && (
           <MenuItem
             onClick={() => {
@@ -139,7 +126,6 @@ export default function UserMenu() {
           </MenuItem>
         )}
         <Divider />
-        {/* เมนูออกจากระบบ */}
         <MenuItem onClick={handleOpenConfirm}>
           <ListItemIcon>
             <LogoutIcon fontSize="small" color="error" />
@@ -148,7 +134,6 @@ export default function UserMenu() {
         </MenuItem>
       </Menu>
 
-      {/* กล่องยืนยันการออกจากระบบ */}
       <Dialog open={openConfirm} onClose={handleCloseConfirm}>
         <DialogTitle>ยืนยันการออกจากระบบ</DialogTitle>
         <DialogContent>

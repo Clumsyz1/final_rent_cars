@@ -27,44 +27,39 @@ import MyAppBar from "@/components/Appbar";
 import styles from "./Rentpage.module.css";
 
 export default function RentPage() {
-  const [cars, setCars] = useState([]); // เก็บข้อมูลรถ
-  const [bookings, setBookings] = useState([]); // เก็บข้อมูลการจอง
-  const [loading, setLoading] = useState(true); // การโหลดข้อมูล
-  const [startDate, setStartDate] = useState(null); // วันที่เริ่มต้น
-  const [endDate, setEndDate] = useState(null); // วันที่สิ้นสุด
-  const [isClient, setIsClient] = useState(false); // เช็คว่าเป็น client หรือไม่
+  const [cars, setCars] = useState([]);
+  const [bookings, setBookings] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
+  const [isClient, setIsClient] = useState(false);
   const router = useRouter();
 
-  // ตัวกรอง
-  const [transmission, setTransmission] = useState("any"); // เลือกเกียร์ (Manual, Automatic, หรือ Any)
-  const [fuelType, setFuelType] = useState("any"); // เลือกประเภทน้ำมัน (Gasoline, Electric, Hybrid)
-  const [bodyType, setBodyType] = useState("any"); // เลือกรูปแบบรถ (SUV, Sedan, etc.)
-  const [priceRange, setPriceRange] = useState([0, 5000]); // เลือกราคาที่ต้องการ
-  const [yearRange, setYearRange] = useState([2000, 2025]); // เลือกปีรถที่ต้องการ
+  const [transmission, setTransmission] = useState("any");
+  const [fuelType, setFuelType] = useState("any");
+  const [bodyType, setBodyType] = useState("any");
+  const [priceRange, setPriceRange] = useState([0, 5000]);
+  const [yearRange, setYearRange] = useState([2000, 2025]);
 
-  // useEffect สำหรับดึงข้อมูล query string (start date, end date)
   useEffect(() => {
     if (typeof window !== "undefined") {
       const params = new URLSearchParams(window.location.search);
       setStartDate(params.get("start"));
       setEndDate(params.get("end"));
-      setIsClient(true); // เปลี่ยนเป็น true เมื่อ client โหลดเสร็จ
+      setIsClient(true);
     }
   }, []);
 
-  // useEffect สำหรับดึงข้อมูลรถและการจอง
   useEffect(() => {
     if (!startDate || !endDate) return;
 
     const fetchData = async () => {
-      // ดึงข้อมูลรถจาก Firestore
       const carSnap = await getDocs(collection(db, "cars"));
       const carsData = carSnap.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
       }));
 
-      // ดึงข้อมูลการจองจาก Firestore ที่ตรงกับช่วงวันที่เลือก
       const bookingSnap = await getDocs(
         query(
           collection(db, "bookings"),
@@ -74,19 +69,17 @@ export default function RentPage() {
       );
       const bookingsData = bookingSnap.docs.map((doc) => doc.data());
 
-      setCars(carsData); // เซ็ตข้อมูลรถที่ดึงมา
-      setBookings(bookingsData); // เซ็ตข้อมูลการจอง
-      setLoading(false); // เปลี่ยนสถานะเป็นไม่โหลดแล้ว
+      setCars(carsData);
+      setBookings(bookingsData);
+      setLoading(false);
     };
 
     fetchData();
   }, [startDate, endDate]);
 
-  // ฟังก์ชันตรวจสอบจำนวนรถที่ว่าง
   const getAvailableStock = (carId, stock) =>
     stock - bookings.filter((b) => b.carId === carId).length;
 
-  // ฟิลเตอร์ข้อมูลรถตามตัวกรองที่เลือก
   const filteredCars = cars.filter((car) => {
     const [minPrice, maxPrice] = priceRange;
     const [minYear, maxYear] = yearRange;
@@ -107,12 +100,9 @@ export default function RentPage() {
     <div>
       <MyAppBar />
       <Grid container>
-        {/* Sidebar Filters */}
         <Grid item className={styles.filtersContainer} p={3}>
           <Paper className={styles.filtersPaper}>
             <Typography variant="h6">Filters</Typography>
-
-            {/* ฟิลเตอร์ประเภทตัวถัง */}
             <FormControl fullWidth sx={{ my: 2 }}>
               <InputLabel>Body Type</InputLabel>
               <Select
@@ -126,8 +116,6 @@ export default function RentPage() {
                 <MenuItem value="Luxury Sedan">Luxury Sedan</MenuItem>
               </Select>
             </FormControl>
-
-            {/* ฟิลเตอร์ช่วงราคา */}
             <Typography>Price Range (฿)</Typography>
             <Slider
               value={priceRange}
@@ -137,8 +125,6 @@ export default function RentPage() {
               valueLabelDisplay="auto"
               className={styles.slider}
             />
-
-            {/* ฟิลเตอร์ช่วงปี */}
             <Typography>Year</Typography>
             <Slider
               value={yearRange}
@@ -148,8 +134,6 @@ export default function RentPage() {
               valueLabelDisplay="auto"
               className={styles.slider}
             />
-
-            {/* ฟิลเตอร์เกียร์ */}
             <Typography>Transmission</Typography>
             <ToggleButtonGroup
               value={transmission}
@@ -162,8 +146,6 @@ export default function RentPage() {
               <ToggleButton value="manual">Manual</ToggleButton>
               <ToggleButton value="automatic">Automatic</ToggleButton>
             </ToggleButtonGroup>
-
-            {/* ฟิลเตอร์ประเภทน้ำมัน */}
             <FormControl fullWidth>
               <InputLabel>Fuel Type</InputLabel>
               <Select
@@ -178,8 +160,6 @@ export default function RentPage() {
             </FormControl>
           </Paper>
         </Grid>
-
-        {/* Car List */}
         <Grid item xs p={3}>
           <Box className={styles.carListContainer}>
             <Typography variant="h4" className={styles.carListTitle}>
@@ -189,7 +169,6 @@ export default function RentPage() {
               วันที่: {startDate} - {endDate}
             </Typography>
             <Divider sx={{ mb: 2 }} />
-
             {loading ? (
               <Grid container className={styles.loading}>
                 <CircularProgress />

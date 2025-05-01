@@ -1,73 +1,67 @@
-/* Container for the form and content */
 .container {
-  max-width: 500px; /* กำหนดความกว้างสูงสุดของคอนเทนเนอร์ */
-  margin: 60px auto; /* ตั้งระยะห่างบน-ล่าง 60px และจัดกึ่งกลาง */
-  padding: 20px; /* เพิ่มช่องว่างภายในคอนเทนเนอร์ */
-  text-align: center; /* จัดข้อความให้เป็นกึ่งกลาง */
-  background-color: #ffffff; /* กำหนดพื้นหลังเป็นสีขาว */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* เพิ่มเงาให้กับคอนเทนเนอร์ */
-  border-radius: 8px; /* ทำมุมโค้งให้กับคอนเทนเนอร์ */
+  max-width: 500px;
+  margin: 60px auto;
+  padding: 20px;
+  text-align: center;
+  background-color: #ffffff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
 }
 
-/* Heading Style */
 .heading {
-  font-size: 24px; /* ขนาดตัวอักษร */
-  font-weight: bold; /* ตัวหนา */
-  color: #333; /* สีตัวอักษร */
-  margin-bottom: 20px; /* ระยะห่างด้านล่าง */
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20px;
 }
 
-/* Form container */
 .form {
-  display: flex; /* ใช้ Flexbox เพื่อจัดการการแสดงผล */
-  flex-direction: column; /* จัดเรียงให้อยู่ในแนวตั้ง */
-  gap: 16px; /* ระยะห่างระหว่างแต่ละฟอร์ม */
-  margin-top: 20px; /* ระยะห่างด้านบน */
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 20px;
 }
 
-/* Input fields */
 .input {
-  padding: 12px; /* เพิ่มช่องว่างภายใน */
-  font-size: 16px; /* ขนาดตัวอักษร */
-  border: 1px solid #ddd; /* กำหนดกรอบสีเทาอ่อน */
-  border-radius: 4px; /* มุมโค้ง */
-  outline: none; /* ไม่ให้มีเส้นขอบเมื่อมีการโฟกัส */
-  transition: border 0.3s ease; /* การเปลี่ยนแปลงขอบในระยะเวลา 0.3 วินาที */
+  padding: 12px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  outline: none;
+  transition: border 0.3s ease;
 }
 
 .input:focus {
-  border-color: #0070f3; /* เปลี่ยนสีขอบเป็นสีน้ำเงินเมื่อมีการโฟกัส */
+  border-color: #0070f3;
 }
 
-/* Submit button */
 .button {
-  padding: 14px; /* ช่องว่างภายในปุ่ม */
-  background-color: #0070f3; /* สีพื้นหลังของปุ่ม */
-  color: white; /* สีตัวอักษรในปุ่ม */
-  font-weight: bold; /* ตัวหนา */
-  border: none; /* ไม่มีกรอบ */
-  border-radius: 4px; /* มุมโค้งของปุ่ม */
-  cursor: pointer; /* แสดง cursor เป็นมือเมื่อชี้ที่ปุ่ม */
-  transition: background-color 0.3s ease; /* การเปลี่ยนแปลงสีพื้นหลัง */
+  padding: 14px;
+  background-color: #0070f3;
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 .button:hover {
-  background-color: #005bb5; /* เปลี่ยนสีพื้นหลังเมื่อ hover */
+  background-color: #005bb5;
 }
 
-/* Links (Forgot Password, Sign Up) */
 .link {
-  margin-top: 15px; /* ระยะห่างด้านบน */
-  color: #080808; /* สีตัวอักษร */
-  font-size: 14px; /* ขนาดตัวอักษร */
+  margin-top: 15px;
+  color: #080808;
+  font-size: 14px;
 }
 
 .link a {
-  text-decoration: none; /* ไม่ให้มีขีดเส้นใต้ */
-  font-weight: bold; /* ตัวหนา */
-  color: #0070f3; /* สีตัวอักษรของลิงก์ */
+  text-decoration: none;
+  font-weight: bold;
+  color: #0070f3;
 }
 
 .link a:hover {
-  text-decoration: underline; /* ขีดเส้นใต้เมื่อ hover ที่ลิงก์ */
+  text-decoration: underline;
 }

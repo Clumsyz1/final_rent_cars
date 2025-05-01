@@ -27,26 +27,23 @@ import MyAppBar from "@/components/Appbar";
 import styles from "./BookingPage.module.css";
 
 export default function BookingPage() {
-  // กำหนด state สำหรับข้อมูลผู้ใช้, การจอง, และสถานะการโหลด
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
-    // เช็คสถานะการล็อกอินของผู้ใช้
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       if (!currentUser) {
-        router.push("/auth/sign-in"); // ถ้าไม่ได้ล็อกอินจะไปที่หน้า Sign In
+        router.push("/auth/sign-in");
       } else {
-        await fetchBookings(currentUser.uid); // ดึงข้อมูลการจองของผู้ใช้
+        await fetchBookings(currentUser.uid);
       }
     });
 
-    return () => unsubscribe(); // ยกเลิกการติดตามสถานะผู้ใช้เมื่อออกจากหน้า
+    return () => unsubscribe();
   }, []);
 
   const fetchBookings = async (uid) => {
-    // ดึงข้อมูลการจองจาก Firebase
     const q = query(collection(db, "bookings"), where("userId", "==", uid));
     const querySnapshot = await getDocs(q);
 
@@ -63,14 +60,13 @@ export default function BookingPage() {
     );
 
     setBookings(bookingList);
-    setLoading(false); // เปลี่ยนสถานะการโหลด
+    setLoading(false);
   };
 
   return (
     <div className={styles.container}>
       <MyAppBar />
       <Grid container spacing={3} p={4}>
-        {/* Sidebar - ส่วนของเมนูข้าง */}
         <Grid item xs={12} sm={3}>
           <div className={styles.sidebar}>
             <Typography variant="h6" gutterBottom>
@@ -100,7 +96,6 @@ export default function BookingPage() {
           </div>
         </Grid>
 
-        {/* Booking History - ส่วนของประวัติการจอง */}
         <Grid item xs={12} sm={9}>
           <div className={styles.content}>
             <Typography variant="h5" gutterBottom>
@@ -108,7 +103,6 @@ export default function BookingPage() {
             </Typography>
             <Divider sx={{ mb: 3 }} />
 
-            {/* แสดงการโหลดหรือข้อมูลการจอง */}
             {loading ? (
               <CircularProgress />
             ) : bookings.length === 0 ? (
