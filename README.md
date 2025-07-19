@@ -1,36 +1,76 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 🚗 Final Rent Cars
 
-## Getting Started
+[ลองใช้งานเว็บไซต์จริง](https://final-rent-cars.vercel.app)
 
-First, run the development server:
+Final Rent Cars คือเว็บแอปพลิเคชันสำหรับเช่ารถออนไลน์ พัฒนาโดยใช้ **Next.js** และเชื่อมต่อกับ **Firebase** รองรับทั้งผู้ใช้งานทั่วไปและผู้ดูแลระบบ (Admin) พร้อมระบบจองรถตามวันที่ว่างจริง และระบบจัดการหลังบ้านเต็มรูปแบบ
+
+## 🔧 Tech Stack
+
+* **Framework:** Next.js (React-based Full Stack Framework)
+* **Styling:** Tailwind CSS
+* **Authentication & Database:** Firebase Authentication, Firestore
+* **Routing:** Built-in Next.js Routing
+* **Date Handling:** Day.js
+* **Deployment:** Vercel
+
+## 🔑 Features
+
+### 👤 ผู้ใช้งานทั่วไป
+
+* สมัครสมาชิกด้วยอีเมล
+* เข้าสู่ระบบ / รีเซ็ตรหัสผ่าน
+* เลือกช่วงวันที่ต้องการเช่ารถ
+* ดูเฉพาะรถที่ยังว่างในช่วงวันที่เลือก
+* จองรถพร้อมบันทึกข้อมูลลง Firestore
+* ดูประวัติการจองของตัวเอง
+* แก้ไขข้อมูลโปรไฟล์ (ชื่อ เบอร์โทร ที่อยู่ ฯลฯ)
+
+### 🛠️ ผู้ดูแลระบบ (Admin)
+
+* เข้าสู่ระบบด้วยบัญชีแอดมิน (ตรวจสอบจาก Firebase) แก้ไขที่users/role (user,admin)
+* เข้าถึงแดชบอร์ดจัดการข้อมูล
+* เพิ่ม/ลบรถในระบบ พร้อมข้อมูล เช่น รุ่น, ปี, ราคา, จำนวนที่มีในสต็อก ฯลฯ
+* ดูประวัติการจองของลูกค้าทุกคน
+
+## ⚙️ วิธีติดตั้งและใช้งาน
+
+### 1. Clone โปรเจกต์:
+
+```bash
+git clone https://github.com/Clumsyz1/final_rent_cars.git
+cd final_rent_cars
+```
+
+### 2. ติดตั้ง dependencies:
+
+```bash
+npm install
+```
+
+### 3. ตั้งค่า Firebase:
+
+* สร้างโปรเจกต์บน [Firebase Console](https://console.firebase.google.com/)
+* เปิดใช้งาน Authentication (Email/Password)
+* เปิดใช้งาน Firestore Database
+* สร้างไฟล์ `.env` แล้วใส่ค่าตามนี้:
+
+```env
+VITE_FIREBASE_API_KEY=your_api_key
+VITE_FIREBASE_AUTH_DOMAIN=your_project.firebaseapp.com
+VITE_FIREBASE_PROJECT_ID=your_project_id
+VITE_FIREBASE_STORAGE_BUCKET=your_bucket
+VITE_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
+VITE_FIREBASE_APP_ID=your_app_id
+```
+
+### 4. เริ่มต้นแอปพลิเคชัน:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## ✍️ ผู้พัฒนา
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+* [@Clumsyz1](https://github.com/Clumsyz1)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+หากพบปัญหาหรือข้อเสนอแนะ สามารถเปิด Issue หรือ Pull Request ได้เลย 🙌
